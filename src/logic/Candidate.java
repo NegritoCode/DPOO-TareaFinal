@@ -29,13 +29,13 @@ public class Candidate {
     }
 
     public boolean isElegibleFor(Offer offer) {
-        // TODO: implementar cuando Offer esté listo
-        // branch.equals(offer.getBranch()) && offer.isAvailable();
-        return true; 
+        // es el mismo que el de oferta
+        // se implementó este método duplicado debido a un requisito del ejercicio
+        return offer.isElegibleTo(this);
     }
 
     public void createRequeriment(String type, String data) {
-      requeriments.add(new Requeriment(type, data));
+        requeriments.add(new Requeriment(type, data));
     }
 
     public void updateRequeriment(String type, String data) {
