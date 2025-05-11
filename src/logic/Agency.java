@@ -7,12 +7,12 @@ public class Agency {
 	private String name;
 	private ArrayList<Company> companies;
 	private ArrayList<Candidate> candidates;
-	private ArrayList<MonthRegister> mRegisteres;
+	private ArrayList<MonthRegister> mRegisters;
 
 	public Agency(String name){
 		companies = new ArrayList<Company>();
 		candidates = new ArrayList<Candidate>();
-		mRegisteres = new ArrayList<MonthRegister>();
+		mRegisters = new ArrayList<MonthRegister>();
 		setName(name);
 	}
 
@@ -45,13 +45,23 @@ public class Agency {
 	}
 
 	public ArrayList<MonthRegister> getmRegisteres() {
-		return mRegisteres;
+		return mRegisters;
 	}
 
 	public void addmRegisteres(MonthRegister m) {
-		mRegisteres.add(m);
+		mRegisters.add(m);
 	}
 	
+	public ArrayList<Interview> getInterviewsByCandidate(String id){
+		ArrayList<Interview> interviews = new ArrayList<Interview>();
+		
+		for(MonthRegister m: mRegisters)
+			for(Day d: m.getDays())
+				for(Interview i: d.getInterviews())
+					if(i.getCandidateCid().equals(id))
+						interviews.add(i);
+		return interviews;
+	}
 
 }
 
