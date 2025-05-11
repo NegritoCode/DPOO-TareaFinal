@@ -62,6 +62,21 @@ public class Agency {
 						interviews.add(i);
 		return interviews;
 	}
+	public ArrayList<Offer> getBestOffers(){
+		ArrayList<Offer> offers = new ArrayList<Offer>();
+		double biggest = 0;
+		for (Company c: companies)
+			for (Offer o: c.getOffers())
+				if (o.getSalary() > biggest){
+					biggest = o.getSalary();
+					offers.clear();
+					offers.add(o);
+				}
+				else if (o.getSalary() == biggest)
+					offers.add(o);
+		
+		return offers;
+	}
 
 }
 
