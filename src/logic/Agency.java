@@ -21,10 +21,10 @@ public class Agency {
 	}
 
 	public void setName(String name) {
-		if (!(name.isEmpty()))
-			this.name = name;
+		if (name == null || name.isEmpty())
+		  throw new IllegalArgumentException("The name cannot be empty");
 		else
-			throw new IllegalArgumentException("The name cannot be empty");
+		  this.name = name;
 
 	}
 
