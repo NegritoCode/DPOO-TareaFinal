@@ -1,61 +1,63 @@
 package logic;
 
 import java.util.ArrayList;
+import utils.Id;
 
 public class Company {
-	private String name;
-	private String address;
-	private String phone;
-	private String sector;
-	private ArrayList<Offer> offers;
-	
-	public Company(String name, String address, String phone, String sector) {
-		
-		this.name = name;
-		this.address = address;
-		this.phone = phone;
-		this.sector = sector;
-	}
+    private String id;
+    private String name;
+    private String address;
+    private String phone;
+    private String sector;
+    private ArrayList<Offer> offers;
 
-	public String getName() {
-		return name;
-	}
+    public Company(String name, String phone, String sector) {
+        this.id = Id.generateId("COMPANY");
+        setName(name);
+        setAddress(address);
+        setPhone(phone);
+        setSector(sector);
+        this.offers = new ArrayList<Offer>();
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    // Getters and setters
+    public String getId() {
+        return id;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
+    public String getAddress() {
+        return address;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public String getSector() {
-		return sector;
-	}
+    public String getPhone() {
+        return phone;
+    }
 
-	public void setSector(String sector) {
-		this.sector = sector;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	public ArrayList<Offer> getOffers() {
-		return offers;
-	}
+    public String getSector() {
+        return sector;
+    }
 
-	public void setOffers(ArrayList<Offer> offers) {
-		this.offers = offers;
-	}
-	
-	
+    public void setSector(String sector) {
+        this.sector = sector;
+    }
+
+    public ArrayList<Offer> getOffers() {
+        return offers;
+    }
 }
