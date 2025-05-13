@@ -1,16 +1,18 @@
 package logic;
 
+import utils.Id;
+
 public class Offer {
     private String id;
     private String branch;
     private double salary;
     private boolean available;
 
-    public Offer(String id, String branch, double salary) {
-        this.id = id;
-        this.branch = branch;
-        this.salary = salary;
-        this.available = true; // disponible por defecto
+    public Offer(String branch, double salary) {
+        this.id = Id.generateId("OFFER");
+        setBranch(branch);
+        setSalary(salary);
+        setAvailable(true); // disponible por defecto
     }
 
     public boolean isElegibleTo(Candidate candidate) {
@@ -27,7 +29,7 @@ public class Offer {
         this.available = available;
     }
 
-    // Getters
+    // Getters and setters
     public String getId() {
         return id;
     }
@@ -35,8 +37,14 @@ public class Offer {
     public String getBranch() {
         return branch;
     }
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
 
     public double getSalary() {
         return salary;
+    }
+    public void setSalary(double salary) {
+        this.salary = salary;
     }
 }
