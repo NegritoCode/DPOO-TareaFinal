@@ -9,12 +9,21 @@ public class Requeriment {
         this.data = data;
     }
     
-    // Getters y setters
+    // Getters
     public String getType() {
         return type;
     }
 
     public String getData() {
         return data;
+    }
+    
+    // Setters
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 }
