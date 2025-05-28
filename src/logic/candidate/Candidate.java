@@ -1,6 +1,6 @@
-package logic;
+package logic.candidate;
 
-import java.util.ArrayList;
+import logic.company.Offer;
 
 public class Candidate {
     private String cid;
@@ -12,7 +12,6 @@ public class Candidate {
     private String schoolLevel;
     private String speciality;
     private int xpYears;
-    private ArrayList<Requeriment> requeriments;
 
     public Candidate(String cid, String branch, String name, char sex, String address, String phone, String schoolLevel,
             String speciality, int xpYears) {
@@ -25,37 +24,12 @@ public class Candidate {
         setSchoolLevel(schoolLevel);
         setSpeciality(speciality);
         setXpYears(xpYears);
-        this.requeriments = new ArrayList<>();
     }
 
     public boolean isElegibleFor(Offer offer) {
         // es el mismo que el de oferta
         // se implementó este método duplicado debido a un requisito del ejercicio
         return offer.isElegibleTo(this);
-    }
-
-    public void createRequeriment(String type, String data) {
-        requeriments.add(new Requeriment(type, data));
-    }
-
-    public void updateRequeriment(String type, String data) {
-        for (Requeriment req : requeriments) {
-            if (req.getType().equals(type)) {
-                requeriments.remove(req);
-                requeriments.add(new Requeriment(type, data));
-                return;
-            }
-        }
-    }
-
-    public boolean hasRequeriment(String type) {
-        // verifica si el candidato tiene un requerimiento de un tipo específico
-        for (Requeriment req : requeriments) {
-            if (req.getType().equals(type)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     // Getters
@@ -93,10 +67,6 @@ public class Candidate {
 
     public int getXpYears() {
         return xpYears;
-    }
-
-    public ArrayList<Requeriment> getRequeriments() {
-        return requeriments;
     }
 
     // Setters

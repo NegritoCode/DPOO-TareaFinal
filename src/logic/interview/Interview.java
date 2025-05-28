@@ -1,4 +1,4 @@
-package logic;
+package logic.interview;
 
 public class Interview {
     private String monthlyId;
