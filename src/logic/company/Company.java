@@ -1,4 +1,4 @@
-package logic;
+package logic.company;
 
 import java.util.ArrayList;
 import utils.Id;

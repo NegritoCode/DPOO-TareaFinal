@@ -1,4 +1,4 @@
-package logic;
+package logic.interview;
 
 import java.util.ArrayList;
 import utils.Id;

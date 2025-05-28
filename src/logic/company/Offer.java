@@ -1,5 +1,6 @@
-package logic;
+package logic.company;
 
+import logic.candidate.Candidate;
 import utils.Id;
 
 public class Offer {

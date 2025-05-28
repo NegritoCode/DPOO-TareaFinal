@@ -1,6 +1,7 @@
-package logic;
+package logic.candidate;
 
 import java.util.ArrayList;
+import logic.company.Offer;
 
 public class Candidate {
     private String cid;

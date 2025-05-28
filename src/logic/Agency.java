@@ -1,6 +1,9 @@
 package logic;
 
 import java.util.ArrayList;
+import logic.candidate.*;
+import logic.company.*;
+import logic.interview.*;
 
 public class Agency {
 

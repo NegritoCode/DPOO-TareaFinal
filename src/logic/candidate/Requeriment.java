@@ -1,4 +1,4 @@
-package logic;
+package logic.candidate;
 
 public class Requeriment {
     private String type;
