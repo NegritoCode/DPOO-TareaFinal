@@ -21,7 +21,7 @@ public class Company {
     }
 
     public Offer createOffer(String branch, double salary) {
-        Offer offer = new Offer(branch, salary);
+        Offer offer = new Offer(this.id, branch, salary);
         offers.add(offer);
         return offer;
     }

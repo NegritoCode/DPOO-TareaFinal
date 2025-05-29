@@ -113,7 +113,7 @@ public class Generator {
         for (int i = 0; i < quantity; i++) {
             Company company = companies.get(random.nextInt(companies.size()));
             String branch = Branch.getRandomBranch();
-            double salary = 1000 + random.nextDouble() * 9000; // Salario entre 1000 y 10000
+            double salary = Math.ceil(20 + random.nextDouble() * 190) * 100;
 
             company.createOffer(branch, salary);
         }

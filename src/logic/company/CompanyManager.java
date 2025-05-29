@@ -28,7 +28,7 @@ public class CompanyManager {
         return company;
     }
 
-    public Company getCompanyById(String id) throws IllegalArgumentException {
+    public Company getCompanyById(String id) {
         Company company = null;
         int i = 0;
         while (company == null && i < companies.size()) {

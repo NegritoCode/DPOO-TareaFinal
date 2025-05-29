@@ -36,7 +36,7 @@ public class MonthViewScreen extends JFrame {
         // Calendar Panel
         JPanel calendarPanel = new JPanel();
         calendarPanel.setLayout(new GridLayout(5, 7, 5, 5));
-        for (Day day : month.getDays()) {
+        for (final Day day : month.getDays()) {
             JButton dayButton = new JButton(day.getId());
             dayButton.addActionListener(new ActionListener() {
                 @Override

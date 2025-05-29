@@ -55,17 +55,16 @@ public class Agency {
 		return interviews;
 	}
 
+	/**
+	 * Las mejores ofertas son las mayores de 10'000 salario
+	 */
 	public ArrayList<Offer> getBestOffers() {
 		ArrayList<Offer> offers = new ArrayList<Offer>();
-		double biggest = 0;
 		for (Company c : companyManager.getCompanies())
 			for (Offer o : c.getOffers())
-				if (o.getSalary() > biggest) {
-					biggest = o.getSalary();
-					offers.clear();
+				if (o.getSalary() > 10000) {
 					offers.add(o);
-				} else if (o.getSalary() == biggest)
-					offers.add(o);
+				} 
 
 		return offers;
 	}
@@ -79,20 +78,29 @@ public class Agency {
 		}
 		return result;
 	}
+	
+	public Candidate getCandidateByCid(String cid) {
+		Candidate result = null;
+		int i = 0;
+		while(result == null && i < candidates.size()) {
+			Candidate candidate = candidates.get(i);
+			if (candidate.getCid().equals(cid)) {
+				result = candidate;
+			}
+			i++;
+		}
+		
+		return result;
+	}
 
 	public ArrayList<Offer> getBestOffersByBranch(String branch) {
 		ArrayList<Offer> offers = new ArrayList<>();
-		double highestSalary = 0;
 		for (Company company : companyManager.getCompanies()) {
 			for (Offer offer : company.getOffers()) {
-				if (offer.getBranch().equalsIgnoreCase(branch)) {
-					if (offer.getSalary() > highestSalary) {
-						highestSalary = offer.getSalary();
-						offers.clear();
+				if (offer.getBranch().equals(branch)) {
+					if (offer.getSalary() > 10000) {
 						offers.add(offer);
-					} else if (offer.getSalary() == highestSalary) {
-						offers.add(offer);
-					}
+					} 
 				}
 			}
 		}
@@ -140,7 +148,7 @@ public class Agency {
 		MonthRegister month = null;
 		if (months.isEmpty()
 				|| months.get(months.size() - 1).getDays().size() == months.get(months.size() - 1).getMaxDay()) {
-			month = new MonthRegister(Id.generateId("MONTH"), 30);
+			month = new MonthRegister(Id.getMonth(months.size()), 30);
 			months.add(month);
 		} else {
 			month = months.get(months.size() - 1);

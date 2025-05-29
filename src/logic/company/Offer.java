@@ -8,11 +8,14 @@ public class Offer {
     private String branch;
     private double salary;
     private boolean available;
+    private String companyId;
 
-    public Offer(String branch, double salary) {
+
+	public Offer(String companyId, String branch, double salary) {
         this.id = Id.generateId("OFFER");
         setBranch(branch);
         setSalary(salary);
+        this.companyId = companyId;
         setAvailable(true); // disponible por defecto
     }
 
@@ -31,6 +34,9 @@ public class Offer {
     // Getters and setters
     public String getId() {
         return id;
+    }
+    public String getCompanyId() {
+    	return companyId;
     }
 
     public String getBranch() {

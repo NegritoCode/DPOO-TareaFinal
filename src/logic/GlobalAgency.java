@@ -13,10 +13,9 @@ public class GlobalAgency {
 
     public static Agency getInstance() {
         if (instance == null) {
-            instance = new Agency("Los papus");
+            instance = new Agency("Agencia Empleadora");
 
-            // TODO: inicializar datos aqui
-            for (Company company : Generator.generateOffers(20, Generator.generateCompanies(21))) {
+            for (Company company : Generator.generateOffers(30, Generator.generateCompanies(10))) {
                 String id = instance.getCompanyManager().createCompany(
                         company.getName(),
                         company.getAddress(),

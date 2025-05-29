@@ -22,6 +22,7 @@ public class HomeScreen extends JFrame {
 		contentPane.setLayout(null);
 
 		JLabel titleLabel = new JLabel("Bienvenido");
+		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
 		titleLabel.setForeground(new Color(33, 150, 243));
 		titleLabel.setBounds(200, 20, 200, 30);
@@ -60,15 +61,16 @@ public class HomeScreen extends JFrame {
 		JButton btnReportes = createModernButton("Reportes", new ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent e) {
-				Navigation.goTo("MonthView");
+				Navigation.goTo("ReportsHome");
 			}
 		});
 		buttonPanel.add(btnReportes);
 
-		JLabel footerLabel = new JLabel("© 2023 Mi Aplicación");
+		JLabel footerLabel = new JLabel("© 2025 Agencia Empleadora");
+		footerLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		footerLabel.setFont(new Font("Arial", Font.PLAIN, 12));
 		footerLabel.setForeground(new Color(150, 150, 150));
-		footerLabel.setBounds(220, 320, 200, 20);
+		footerLabel.setBounds(180, 317, 200, 20);
 		contentPane.add(footerLabel);
 	}
 
