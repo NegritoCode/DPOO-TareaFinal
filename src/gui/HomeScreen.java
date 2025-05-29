@@ -2,68 +2,85 @@ package gui;
 
 import utils.Navigation;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class HomeScreen extends JFrame {
 
 	private JPanel contentPane;
 
-	/**
-	 * Create the frame.
-	 */
 	public HomeScreen() {
-		setTitle("Home");
+		setTitle("Inicio");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 859, 579);
+		setBounds(100, 100, 600, 400);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBackground(Color.WHITE);
+		contentPane.setBorder(new EmptyBorder(20, 20, 20, 20));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(0, 36, 838, 504);
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Negrito\\Documents\\Projects Eclipse\\DPOO-TareaFinal\\assets\\Flux_Dev_A_vibrant_modern_illustration_for_the_background_of_a_2.jpg"));
-		contentPane.add(lblNewLabel);
-		
-		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 833, 36);
-		contentPane.add(panel);
-		panel.setLayout(null);
-		
-		JButton btnCandidatos = new JButton("Candidatos");
-		btnCandidatos.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+
+		JLabel titleLabel = new JLabel("Bienvenido");
+		titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+		titleLabel.setForeground(new Color(33, 150, 243));
+		titleLabel.setBounds(200, 20, 200, 30);
+		contentPane.add(titleLabel);
+
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setBounds(50, 80, 500, 200);
+		buttonPanel.setLayout(new GridLayout(2, 2, 20, 20));
+		buttonPanel.setBackground(Color.WHITE);
+		contentPane.add(buttonPanel);
+
+		JButton btnCandidatos = createModernButton("Candidatos", new ActionListener() {
+			@Override
+			public void actionPerformed(java.awt.event.ActionEvent e) {
 				Navigation.goTo("CandidateManager");
 			}
 		});
-		btnCandidatos.setBounds(149, 11, 134, 23);
-		panel.add(btnCandidatos);
-		btnCandidatos.setForeground(Color.BLACK);
-		btnCandidatos.setBackground(Color.WHITE);
-		
-		JButton btnNewButton = new JButton("Empresas");
-		btnNewButton.setBackground(Color.WHITE);
-		btnNewButton.setForeground(Color.BLACK);
-		btnNewButton.setBounds(0, 11, 149, 23);
-		panel.add(btnNewButton);
-		
-		JButton btnOfertas = new JButton("Ofertas");
-		btnOfertas.setBackground(Color.WHITE);
-		btnOfertas.setBounds(281, 11, 134, 23);
-		panel.add(btnOfertas);
-		
-		JButton btnReportes = new JButton("Reportes");
-		btnReportes.setBackground(Color.WHITE);
-		btnReportes.setBounds(415, 11, 134, 23);
-		panel.add(btnReportes);
+		buttonPanel.add(btnCandidatos);
+
+		JButton btnEmpresas = createModernButton("Empresas", new ActionListener() {
+			@Override
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				Navigation.goTo("CompanyManager");
+			}
+		});
+		buttonPanel.add(btnEmpresas);
+
+		JButton btnOfertas = createModernButton("Ofertas", new ActionListener() {
+			@Override
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				Navigation.goTo("OfferManager");
+			}
+		});
+		buttonPanel.add(btnOfertas);
+
+		JButton btnReportes = createModernButton("Reportes", new ActionListener() {
+			@Override
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				Navigation.goTo("ReportManager");
+			}
+		});
+		buttonPanel.add(btnReportes);
+
+		JLabel footerLabel = new JLabel("© 2023 Mi Aplicación");
+		footerLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+		footerLabel.setForeground(new Color(150, 150, 150));
+		footerLabel.setBounds(220, 320, 200, 20);
+		contentPane.add(footerLabel);
+	}
+
+	private JButton createModernButton(String text, ActionListener action) {
+		JButton button = new JButton(text);
+		button.setFont(new Font("Arial", Font.BOLD, 14));
+		button.setBackground(new Color(33, 150, 243));
+		button.setForeground(Color.WHITE);
+		button.setFocusPainted(false);
+		button.setBorder(BorderFactory.createEmptyBorder());
+		button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		button.addActionListener(action);
+		return button;
 	}
 }

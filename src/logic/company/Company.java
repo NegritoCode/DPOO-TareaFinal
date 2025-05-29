@@ -20,6 +20,12 @@ public class Company {
         this.offers = new ArrayList<Offer>();
     }
 
+    public Offer createOffer(String branch, double salary) {
+        Offer offer = new Offer(branch, salary);
+        offers.add(offer);
+        return offer;
+    }
+
     // Getters and setters
     public String getId() {
         return id;
@@ -30,6 +36,9 @@ public class Company {
     }
 
     public void setName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre no puede estar vacío.");
+        }
         this.name = name;
     }
 
@@ -38,6 +47,9 @@ public class Company {
     }
 
     public void setAddress(String address) {
+        if (address == null || address.trim().isEmpty()) {
+            throw new IllegalArgumentException("La dirección no puede estar vacía.");
+        }
         this.address = address;
     }
 
@@ -46,6 +58,9 @@ public class Company {
     }
 
     public void setPhone(String phone) {
+        if (phone == null || phone.trim().isEmpty()) {
+            throw new IllegalArgumentException("El teléfono no puede estar vacío.");
+        }
         this.phone = phone;
     }
 
@@ -54,6 +69,9 @@ public class Company {
     }
 
     public void setSector(String sector) {
+        if (sector == null || sector.trim().isEmpty()) {
+            throw new IllegalArgumentException("El sector no puede estar vacío.");
+        }
         this.sector = sector;
     }
 

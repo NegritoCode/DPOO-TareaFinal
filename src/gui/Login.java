@@ -1,24 +1,12 @@
 package gui;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import utils.Navigation;
-
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-
-import java.awt.Color;
-
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-import javax.swing.JPasswordField;
 
 public class Login extends JFrame {
 
@@ -27,62 +15,70 @@ public class Login extends JFrame {
 	private JPasswordField passwordField;
 
 	public Login() {
-		setTitle("Iniciar Sesi\u00F3n");
+		setTitle("Iniciar Sesión");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 534, 300);
+		setBounds(100, 100, 400, 500);
 		contentPane = new JPanel();
-		contentPane.setBackground(Color.DARK_GRAY);
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBackground(Color.WHITE);
+		contentPane.setBorder(new EmptyBorder(20, 20, 20, 20));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
+		JLabel titleLabel = new JLabel("Iniciar Sesión");
+		titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+		titleLabel.setForeground(new Color(33, 150, 243));
+		titleLabel.setBounds(120, 30, 200, 30);
+		contentPane.add(titleLabel);
+
 		usernameField = new JTextField();
-		usernameField.setBounds(10, 69, 338, 20);
+		usernameField.setBounds(50, 100, 300, 40);
+		usernameField.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
+		usernameField.setFont(new Font("Arial", Font.PLAIN, 14));
 		contentPane.add(usernameField);
-		usernameField.setColumns(10);
 
-		passwordField = new JPasswordField();
-		passwordField.setBounds(10, 125, 338, 20);
-		contentPane.add(passwordField);
-
-		JLabel usernameLabel = new JLabel("Nombre de usuario:");
-		usernameLabel.setBounds(10, 49, 129, 14);
-		usernameLabel.setForeground(Color.WHITE);
+		JLabel usernameLabel = new JLabel("Nombre de usuario");
+		usernameLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+		usernameLabel.setForeground(new Color(100, 100, 100));
+		usernameLabel.setBounds(50, 80, 200, 20);
 		contentPane.add(usernameLabel);
 
-		JLabel passwordLabel = new JLabel("Contrase\u00F1a:");
-		passwordLabel.setBounds(10, 100, 107, 14);
-		passwordLabel.setForeground(Color.WHITE);
+		passwordField = new JPasswordField();
+		passwordField.setBounds(50, 180, 300, 40);
+		passwordField.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1));
+		passwordField.setFont(new Font("Arial", Font.PLAIN, 14));
+		contentPane.add(passwordField);
+
+		JLabel passwordLabel = new JLabel("Contraseña");
+		passwordLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+		passwordLabel.setForeground(new Color(100, 100, 100));
+		passwordLabel.setBounds(50, 160, 200, 20);
 		contentPane.add(passwordLabel);
 
-		final JLabel errorLabel = new JLabel("Nombre de usuario o contrase\u00F1a incorrecto");
-		errorLabel.setBounds(10, 151, 338, 20);
+		final JLabel errorLabel = new JLabel("Nombre de usuario o contraseña incorrecto");
+		errorLabel.setFont(new Font("Arial", Font.PLAIN, 12));
 		errorLabel.setForeground(Color.RED);
+		errorLabel.setBounds(50, 230, 300, 20);
 		contentPane.add(errorLabel);
 		errorLabel.setVisible(false);
 
-		JButton loginButton = new JButton("Iniciar Sesi\u00F3n");
+		JButton loginButton = new JButton("Iniciar Sesión");
+		loginButton.setBounds(50, 280, 300, 40);
+		loginButton.setBackground(new Color(33, 150, 243));
+		loginButton.setForeground(Color.WHITE);
+		loginButton.setFont(new Font("Arial", Font.BOLD, 14));
+		loginButton.setFocusPainted(false);
+		loginButton.setBorder(BorderFactory.createEmptyBorder());
+		loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		loginButton.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
-				if (usernameField.getText().equals("admin") && passwordField.getText().equals("admin")) {
+				if (usernameField.getText().equals("admin") && new String(passwordField.getPassword()).equals("admin")) {
 					JOptionPane.showMessageDialog(null, "Bienvenido");
 					dispose();
 					Navigation.goTo("Home");
 				} else
 					errorLabel.setVisible(true);
-
 			}
 		});
-		loginButton.setBounds(185, 227, 119, 23);
 		contentPane.add(loginButton);
-
-		JLabel imageLabel = new JLabel("New label");
-		imageLabel.setBounds(379, 49, 129, 122);
-		imageLabel.setIcon(new ImageIcon(
-				"C:\\Users\\Negrito\\Pictures\\Flux_Dev_A_modern_and_sleek_illustration_for_a_login_page_of_a_3.jpg"));
-		imageLabel.setForeground(Color.WHITE);
-		contentPane.add(imageLabel);
-
 	}
 }

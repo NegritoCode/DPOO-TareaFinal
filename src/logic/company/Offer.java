@@ -38,14 +38,22 @@ public class Offer {
     public String getBranch() {
         return branch;
     }
+
     public void setBranch(String branch) {
+        if (branch == null || branch.isEmpty()) {
+            throw new IllegalArgumentException("La rama no puede ser nula o vacía.");
+        }
         this.branch = branch;
     }
 
     public double getSalary() {
         return salary;
     }
+
     public void setSalary(double salary) {
+        if (salary <= 0) {
+            throw new IllegalArgumentException("El salario debe ser un número positivo.");
+        }
         this.salary = salary;
     }
 }

@@ -4,20 +4,51 @@ import java.util.ArrayList;
 
 public class CompanyManager {
     private ArrayList<Company> companies;
-    public CompanyManager () {
+
+    public CompanyManager() {
         companies = new ArrayList<Company>();
     }
 
-	public ArrayList<Company> getCompanies() {
-		return companies;
-	}
+    public ArrayList<Company> getCompanies() {
+        return companies;
+    }
 
-	public void createCompany(String name, String address, String phone, String sector) {
-		companies.add(new Company(name, address, phone, sector));
-	}
+    public Company getCompanyByName(String name) throws IllegalArgumentException {
+        Company company = null;
+        int i = 0;
+        while (company == null && i < companies.size()) {
+            if (companies.get(i).getName().equals(name)) {
+                company = companies.get(i);
+            }
+            i++;
+        }
+        if (company == null) {
+            throw new IllegalArgumentException("La Empresa " + name + " no se encontró.");
+        }
+        return company;
+    }
 
-    public void removeCompany(String companyId) {
-       // companies.removeIf(company -> company.getId().equals(companyId));
+    public Company getCompanyById(String id) throws IllegalArgumentException {
+        Company company = null;
+        int i = 0;
+        while (company == null && i < companies.size()) {
+            if (companies.get(i).getId().equals(id)) {
+                company = companies.get(i);
+            }
+            i++;
+        }
+        if (company == null) {
+            throw new IllegalArgumentException("La Empresa " + id + " no se encontró.");
+        }
+        return company;
+    }
+
+    public void createCompany(String name, String address, String phone, String sector) {
+        companies.add(new Company(name, address, phone, sector));
+    }
+
+    public void createOffer(String companyId, String branch, double salary) {
+        getCompanyById(companyId).createOffer(branch, salary);
     }
 
     public ArrayList<Company> getCompaniesWithoutInterviews() {

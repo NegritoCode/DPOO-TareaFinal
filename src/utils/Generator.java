@@ -2,6 +2,7 @@ package utils;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.HashSet;
 
 import utils.constants.Branch;
 import utils.constants.Sector;
@@ -9,54 +10,104 @@ import utils.constants.Specialty;
 import logic.candidate.Candidate;
 import logic.company.Company;
 
-
 public class Generator {
-	private static final String[] NOMBRES = {"Juan", "Maria", "Carlos", "Ana", "Luis", "Elena", "Roberto", "Laura", "Miguel", "Sofia"};
-    private static final char[] SEXOS = {'M', 'F'};
-    private static final String[] RAMAS = Branch.BRANCHES;
-    private static final String[] DIRECCIONES = {"Calle A", "Avenida B", "Carrera C", "Zona D", "Paseo E"};
-    private static final String[] ESPECIALIDADES = Specialty.specialties;
-    private static final String[] NIVELES = {"Secundaria","Pre","Universidad"};
-    private static final String[] NAMES = {"TechCorp", "SafeGuard", "TravelEase", "CyberSecure", "HotelPlus", "DataShield"};
-    private static final String[] SECTORS = Sector.SECTORS;
-    private static final String[] ADDRESSES = {"Calle A", "Avenida B", "Carrera C", "Zona D", "Paseo E"};
+    // Address components
+    private static final String[] STREETS = {"Calle", "Avenida", "Carrera", "Zona", "Paseo", "Boulevard", "Camino", "Plaza"};
+    private static final String[] STREET_SUFFIXES = {"A", "B", "C", "D", "E", "F", "G", "H"};
     
-    public static ArrayList<Candidate> generarCandidatos(int cantidad) {
-        ArrayList<Candidate> candidatos = new ArrayList<>();
+    // Person names
+    private static final String[] BASE_NAMES = {"Juan", "Maria", "Carlos", "Ana", "Luis", "Elena", "Roberto", "Laura", "Miguel", "Sofia"};
+    private static final String[] LAST_NAMES = {"Perez", "Gomez", "Rodriguez", "Lopez", "Martinez", "Garcia", "Hernandez", "Fernandez", "Ruiz", "Diaz"};
+    private static final HashSet<String> generatedNames = new HashSet<>();
+    
+    // Other personal data
+    private static final char[] GENDERS = {'M', 'F'};
+    private static final String[] EDUCATION_LEVELS = {"Secundaria", "Pre", "Universidad"};
+    
+    // Professional data
+    private static final String[] SPECIALTIES = Specialty.specialties;
+    
+    // Company data
+    private static final String[] COMPANY_NAMES = {"TechCorp", "SafeGuard", "TravelEase", "CyberSecure", "HotelPlus", "DataShield"};
+    private static final String[] COMPANY_PREFIXES = {"Empresa", "Tech", "Habana", "Cuba", "Global", "Innovaci√≥n", "Soluciones", "Grupo", "Matarile"};
+    private static final String[] COMPANY_SUFFIXES = {"Acueductos", "Electric", "Farmacos", "Consulting", "Logistics", "Industries", "Services", "Cuaso"};
+    private static final HashSet<String> generatedCompanyNames = new HashSet<>();
+    private static final HashSet<String> generatedAddresses = new HashSet<>();
+
+    private static String generateUniqueName() {
         Random random = new Random();
-
-        for (int i = 0; i < cantidad; i++) {
-        	String carnetID = String.valueOf(10000000000L + (Math.abs(random.nextLong()) % 90000000000L)); // Generar CI de 11 dÌgitos
-            String nombreAleatorio = NOMBRES[random.nextInt(NOMBRES.length)];
-            char sexoAleatorio = SEXOS[random.nextInt(SEXOS.length)];
-            String direccionAleatoria = DIRECCIONES[random.nextInt(DIRECCIONES.length)];
-            String telefonoAleatorio = String.valueOf(10000000 + random.nextInt(90000000)); // TelÈfono de 8 dÌgitos
-            String nivelesAleatorios = NIVELES[random.nextInt(NIVELES.length)];
-            String ramaAleatoria = RAMAS[random.nextInt(RAMAS.length)];
-            String especialidadAleatoria = ESPECIALIDADES[random.nextInt(ESPECIALIDADES.length)];
-            int anosExpAleatorio = random.nextInt(20); // AÒos de experiencia entre 0 y 19
-
-            candidatos.add(new Candidate(carnetID, ramaAleatoria, nombreAleatorio, sexoAleatorio, direccionAleatoria,telefonoAleatorio,nivelesAleatorios, especialidadAleatoria, anosExpAleatorio));
-        }
-
-        return candidatos;
-        
-       
+        String fullName;
+        do {
+            String firstName = BASE_NAMES[random.nextInt(BASE_NAMES.length)];
+            String lastName = LAST_NAMES[random.nextInt(LAST_NAMES.length)];
+            fullName = firstName + " " + lastName;
+        } while (!generatedNames.add(fullName));
+        return fullName;
     }
-    public static ArrayList<Company> generateCompanies(int quantity) {
-        ArrayList<Company> companies = new ArrayList<Company>();
+
+    private static String generateUniqueAddress() {
+        Random random = new Random();
+        String address;
+        do {
+            String street = STREETS[random.nextInt(STREETS.length)];
+            String suffix = STREET_SUFFIXES[random.nextInt(STREET_SUFFIXES.length)];
+            int number = 1 + random.nextInt(100);
+            address = street + " " + suffix + " #" + number;
+        } while (!generatedAddresses.add(address));
+        return address;
+    }
+
+    public static ArrayList<Candidate> generateCandidates(int quantity) {
+        ArrayList<Candidate> candidates = new ArrayList<>();
         Random random = new Random();
 
         for (int i = 0; i < quantity; i++) {
-            
-            String name = NAMES[random.nextInt(NAMES.length)];
-            String address = ADDRESSES[random.nextInt(ADDRESSES.length)];
-            String phone = String.valueOf(10000000 + random.nextInt(90000000)); // 8 dÌgitos
-            String sector = SECTORS[random.nextInt(SECTORS.length)];
+            String id = String.valueOf(10000000000L + (Math.abs(random.nextLong()) % 90000000000L));
+            String name = generateUniqueName();
+            char gender = GENDERS[random.nextInt(GENDERS.length)];
+            String address = generateUniqueAddress();
+            String phone = generateRandomPhoneNumber();
+            String educationLevel = EDUCATION_LEVELS[random.nextInt(EDUCATION_LEVELS.length)];
+            String branch = Branch.getRandomBranch();
+            String specialty = SPECIALTIES[random.nextInt(SPECIALTIES.length)];
+            int yearsOfExperience = random.nextInt(20);
 
-            companies.add(new Company( name, address, phone, sector));
+            candidates.add(new Candidate(id, branch, name, gender, address, 
+                                      phone, educationLevel, specialty, yearsOfExperience));
+        }
+
+        return candidates;
+    }
+
+    private static String generateUniqueCompanyName() {
+        Random random = new Random();
+        String companyName;
+        do {
+            String prefix = COMPANY_PREFIXES[random.nextInt(COMPANY_PREFIXES.length)];
+            String base = COMPANY_NAMES[random.nextInt(COMPANY_NAMES.length)];
+            String suffix = COMPANY_SUFFIXES[random.nextInt(COMPANY_SUFFIXES.length)];
+            companyName = prefix + " " + base + " " + suffix;
+        } while (!generatedCompanyNames.add(companyName));
+        return companyName;
+    }
+
+    public static ArrayList<Company> generateCompanies(int quantity) {
+        ArrayList<Company> companies = new ArrayList<>();
+
+        for (int i = 0; i < quantity; i++) {
+            String name = generateUniqueCompanyName();
+            String address = generateUniqueAddress();
+            String phone = generateRandomPhoneNumber();
+            String sector = Sector.getRandomSector();
+
+            companies.add(new Company(name, address, phone, sector));
         }
 
         return companies;
+    }
+
+    private static String generateRandomPhoneNumber() {
+        Random random = new Random();
+        return String.valueOf(10000000 + random.nextInt(90000000));
     }
 }
