@@ -56,7 +56,7 @@ public class CandidateManagerScreen extends JFrame {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CandidateFormDialog(CandidateManagerScreen.this, agency, null).setVisible(true);
+                new CandidateFormDialog(CandidateManagerScreen.this, null).setVisible(true);
                 loadCandidates();
             }
         });

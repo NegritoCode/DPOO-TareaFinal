@@ -4,64 +4,130 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.border.EmptyBorder;
 import logic.Agency;
+import logic.GlobalAgency;
 import logic.candidate.Candidate;
+import logic.candidate.SegurityCandidate;
+import logic.candidate.TourismCandidate;
+import utils.constants.Branch;
+import utils.constants.Specialty;
 
 public class CandidateFormDialog extends JDialog {
-    private JTextField cidField, nameField, phoneField, specialityField, xpYearsField, branchField, addressField, schoolLevelField;
+    private JTextField cidField, nameField, phoneField, xpYearsField, addressField, schoolLevelField;
     private JComboBox<Character> sexComboBox;
+    private JComboBox<String> branchComboBox, specialityComboBox;
     private Agency agency;
     private Candidate candidate;
+    private JTextField physicalEfficiencyField, medicalRecordField, languageCertificateField;
+    private JPanel extraFieldsPanel;
 
-    public CandidateFormDialog(JFrame parent, Agency agency, Candidate candidate) {
+    public CandidateFormDialog(JFrame parent, Candidate candidate) {
         super(parent, "Formulario de Candidato", true);
-        this.agency = agency;
+        this.agency = GlobalAgency.getInstance();
         this.candidate = candidate;
 
-        setSize(400, 450);
+        setSize(500, 600);
         setLocationRelativeTo(parent);
-        setLayout(new GridLayout(10, 2, 10, 10));
+        setLayout(new BorderLayout(10, 10));
 
-        add(new JLabel("ID:"));
+        JPanel contentPanel = new JPanel(new GridBagLayout());
+        contentPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        add(contentPanel, BorderLayout.CENTER);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+
+        contentPanel.add(new JLabel("Carnet:"), gbc);
         cidField = new JTextField();
-        add(cidField);
+        gbc.gridx = 1;
+        contentPanel.add(cidField, gbc);
 
-        add(new JLabel("Nombre:"));
+        gbc.gridx = 0;
+        gbc.gridy++;
+        contentPanel.add(new JLabel("Nombre:"), gbc);
         nameField = new JTextField();
-        add(nameField);
+        gbc.gridx = 1;
+        contentPanel.add(nameField, gbc);
 
-        add(new JLabel("Sexo:"));
-        sexComboBox = new JComboBox<>(new Character[]{'M', 'F'});
-        add(sexComboBox);
+        gbc.gridx = 0;
+        gbc.gridy++;
+        contentPanel.add(new JLabel("Sexo:"), gbc);
+        sexComboBox = new JComboBox<>(new Character[] { 'M', 'F' });
+        gbc.gridx = 1;
+        contentPanel.add(sexComboBox, gbc);
 
-        add(new JLabel("Teléfono:"));
+        gbc.gridx = 0;
+        gbc.gridy++;
+        contentPanel.add(new JLabel("Teléfono:"), gbc);
         phoneField = new JTextField();
-        add(phoneField);
+        gbc.gridx = 1;
+        contentPanel.add(phoneField, gbc);
 
-        add(new JLabel("Especialidad:"));
-        specialityField = new JTextField();
-        add(specialityField);
-
-        add(new JLabel("Años de Experiencia:"));
+        gbc.gridx = 0;
+        gbc.gridy++;
+        contentPanel.add(new JLabel("Años de Experiencia:"), gbc);
         xpYearsField = new JTextField();
-        add(xpYearsField);
-        
-        add(new JLabel("Ramo:"));
-        branchField = new JTextField();
-        add(branchField);
+        gbc.gridx = 1;
+        contentPanel.add(xpYearsField, gbc);
 
-        add(new JLabel("Dirección:"));
+        gbc.gridx = 0;
+        gbc.gridy++;
+        contentPanel.add(new JLabel("Ramo:"), gbc);
+        branchComboBox = new JComboBox<>(Branch.BRANCHES);
+        gbc.gridx = 1;
+        contentPanel.add(branchComboBox, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy++;
+        contentPanel.add(new JLabel("Especialidad:"), gbc);
+        specialityComboBox = new JComboBox<>(Specialty.specialties);
+        gbc.gridx = 1;
+        contentPanel.add(specialityComboBox, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy++;
+        contentPanel.add(new JLabel("Dirección:"), gbc);
         addressField = new JTextField();
-        add(addressField);
+        gbc.gridx = 1;
+        contentPanel.add(addressField, gbc);
 
-        add(new JLabel("Nivel Escolar:"));
+        gbc.gridx = 0;
+        gbc.gridy++;
+        contentPanel.add(new JLabel("Nivel Escolar:"), gbc);
         schoolLevelField = new JTextField();
-        add(schoolLevelField);
+        gbc.gridx = 1;
+        contentPanel.add(schoolLevelField, gbc);
 
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.gridwidth = 2;
+        extraFieldsPanel = new JPanel(new GridLayout(0, 2));
+        contentPanel.add(extraFieldsPanel, gbc);
+
+        // Campos adicionales
+        physicalEfficiencyField = new JTextField();
+        medicalRecordField = new JTextField();
+        languageCertificateField = new JTextField();
+
+        updateExtraFields();
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton saveButton = new JButton("Guardar");
         JButton cancelButton = new JButton("Cancelar");
-        add(saveButton);
-        add(cancelButton);
+        buttonPanel.add(saveButton);
+        buttonPanel.add(cancelButton);
+        add(buttonPanel, BorderLayout.SOUTH);
+
+        branchComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateExtraFields();
+            }
+        });
 
         if (candidate != null) {
             loadCandidateData();
@@ -88,10 +154,40 @@ public class CandidateFormDialog extends JDialog {
         nameField.setText(candidate.getName());
         sexComboBox.setSelectedItem(candidate.getSex());
         phoneField.setText(candidate.getPhone());
-        specialityField.setText(candidate.getSpeciality());
         xpYearsField.setText(String.valueOf(candidate.getXpYears()));
+        branchComboBox.setSelectedItem(candidate.getBranch());
         addressField.setText(candidate.getAddress());
+        specialityComboBox.setSelectedItem(candidate.getSpeciality());
         schoolLevelField.setText(candidate.getSchoolLevel());
+    }
+
+    private void updateExtraFields() {
+        extraFieldsPanel.removeAll();
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+
+        String selectedBranch = (String) branchComboBox.getSelectedItem();
+        if ("custodio".equalsIgnoreCase(selectedBranch)) {
+            extraFieldsPanel.add(new JLabel("Eficiencia Física:"), gbc);
+            gbc.gridx = 1;
+            extraFieldsPanel.add(physicalEfficiencyField, gbc);
+
+            gbc.gridx = 0;
+            gbc.gridy++;
+            extraFieldsPanel.add(new JLabel("Número de Registro Médico:"), gbc);
+            gbc.gridx = 1;
+            extraFieldsPanel.add(medicalRecordField, gbc);
+        } else if ("turismo".equalsIgnoreCase(selectedBranch)) {
+            extraFieldsPanel.add(new JLabel("Certificado de Idiomas:"), gbc);
+            gbc.gridx = 1;
+            extraFieldsPanel.add(languageCertificateField, gbc);
+        }
+
+        extraFieldsPanel.revalidate();
+        extraFieldsPanel.repaint();
     }
 
     private void saveCandidate() {
@@ -100,24 +196,25 @@ public class CandidateFormDialog extends JDialog {
             String name = nameField.getText();
             char sex = (char) sexComboBox.getSelectedItem();
             String phone = phoneField.getText();
-            String speciality = specialityField.getText();
             int xpYears = Integer.parseInt(xpYearsField.getText());
-            String branch = branchField.getText();
+            String branch = (String) branchComboBox.getSelectedItem();
+            String speciality = (String) specialityComboBox.getSelectedItem();
             String address = addressField.getText();
             String schoolLevel = schoolLevelField.getText();
 
-            if (candidate == null) {
-                Candidate newCandidate = new Candidate(cid, branch, name, sex, address, phone, schoolLevel, speciality, xpYears);
-                agency.addCandidate(newCandidate);
-            } else {
-                candidate.setName(name);
-                candidate.setSex(sex);
-                candidate.setPhone(phone);
-                candidate.setSpeciality(speciality);
-                candidate.setXpYears(xpYears);
-                candidate.setBranch(branch);
-                candidate.setAddress(address);
-                candidate.setSchoolLevel(schoolLevel);
+            Candidate candidate = agency.createCandidate(cid, branch, name, sex, address, phone, schoolLevel,
+                    speciality, xpYears);
+
+            if (candidate instanceof SegurityCandidate) {
+                String physicalEfficiency = physicalEfficiencyField.getText();
+                String medicalRecord = medicalRecordField.getText();
+
+                ((SegurityCandidate) candidate).setPhysicalEfficiencyScores(physicalEfficiency);
+                ((SegurityCandidate) candidate).setMedicalRecordNumber(medicalRecord);
+            } else if (candidate instanceof TourismCandidate) {
+                String languageCertificate = languageCertificateField.getText();
+
+                ((TourismCandidate) candidate).setLanguageCertificate(languageCertificate);
             }
 
             dispose();
