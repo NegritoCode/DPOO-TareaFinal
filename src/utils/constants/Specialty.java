@@ -1,5 +1,7 @@
 package utils.constants;
 
+import java.util.Random;
+
 public class Specialty {
     public static final String[] specialties = {
             "informática",
@@ -14,7 +16,8 @@ public class Specialty {
             "contabilidad"
     };
 
-    public static int getSpecialtiesCount() {
-        return specialties.length;
+    public static String getRandomSpecialty() {
+        Random random = new Random();
+        return specialties[random.nextInt(specialties.length)];
     }
 }
