@@ -17,7 +17,7 @@ public class CompanyManager {
 	}
 
     public void removeCompany(String companyId) {
-        companies.removeIf(company -> company.getId().equals(companyId));
+       // companies.removeIf(company -> company.getId().equals(companyId));
     }
 
     public ArrayList<Company> getCompaniesWithoutInterviews() {
