@@ -1,6 +1,6 @@
 package gui;
 
-import utils.ScreenManager;
+import utils.Navigation;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -42,7 +42,7 @@ public class HomeScreen extends JFrame {
 		JButton btnCandidatos = new JButton("Candidatos");
 		btnCandidatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ScreenManager.show("CandidateManager");
+				Navigation.goTo("CandidateManager");
 			}
 		});
 		btnCandidatos.setBounds(149, 11, 134, 23);

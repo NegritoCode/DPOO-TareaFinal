@@ -3,9 +3,10 @@ package utils;
 import java.util.HashMap;
 import javax.swing.JFrame;
 
-public class ScreenManager {
+public class Navigation {
     private static HashMap<String, JFrame> screens = new HashMap<String, JFrame>();
-
+    
+    private static String currentFrame;
     public static void register(String name, JFrame frame) {
         screens.put(name, frame);
     }
@@ -18,11 +19,11 @@ public class ScreenManager {
         return frame;
     }
 
-    public static void show(String name) {
+    public static void goTo(String name) {
         getScreen(name).setVisible(true);
-    }
-
-    public static void hide(String name) {
-        getScreen(name).setVisible(false);
+        if (currentFrame != null) {
+            getScreen(currentFrame).setVisible(false);
+        }
+        currentFrame = name;
     }
 }

@@ -5,7 +5,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import utils.ScreenManager;
+import utils.Navigation;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -68,7 +68,7 @@ public class Login extends JFrame {
 				if (usernameField.getText().equals("admin") && passwordField.getText().equals("admin")) {
 					JOptionPane.showMessageDialog(null, "Bienvenido");
 					dispose();
-					ScreenManager.show("Home");
+					Navigation.goTo("Home");
 				} else
 					errorLabel.setVisible(true);
 
