@@ -29,23 +29,18 @@ public class Agency {
 			throw new IllegalArgumentException("The name cannot be empty");
 		else
 			this.name = name;
+	}
 
+	public CompanyManager getCompanyManager() {
+		return companyManager;
 	}
 
 	public ArrayList<Candidate> getCandidates() {
 		return candidates;
 	}
 
-	public void addCandidate(Candidate c) {
-		candidates.add(c);
-	}
-
 	public ArrayList<MonthRegister> getMonths() {
 		return months;
-	}
-
-	public void addMonth(MonthRegister m) {
-		months.add(m);
 	}
 
 	public ArrayList<Interview> getInterviewsByCandidate(String id) {
@@ -101,5 +96,24 @@ public class Agency {
 			}
 		}
 		return offers;
+	}
+
+	public Candidate createCandidate(String cid, String branch, String name, char sex, String address, String phone,
+			String schoolLevel, String speciality, int xpYears) {
+
+		Candidate candidate;
+		if (branch.equals("seguridad")) {
+			candidate = new SegurityCandidate(cid, branch, name, sex, address, phone, schoolLevel, speciality, xpYears,
+					"", "");
+		} else if (branch.equals("turismo")) {
+			candidate = new TourismCandidate(cid, branch, name, sex, address, phone, schoolLevel, speciality, xpYears,
+					"");
+		} else {
+			candidate = new Candidate(cid, branch, name, sex, address, phone, schoolLevel, speciality, xpYears);
+		}
+		
+		candidates.add(candidate);
+
+		return candidate;
 	}
 }

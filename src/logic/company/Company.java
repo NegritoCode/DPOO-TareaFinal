@@ -11,7 +11,7 @@ public class Company {
     private String sector;
     private ArrayList<Offer> offers;
 
-    public Company(String name, String phone, String sector) {
+    public Company(String name, String phone, String address, String sector) {
         this.id = Id.generateId("COMPANY");
         setName(name);
         setAddress(address);

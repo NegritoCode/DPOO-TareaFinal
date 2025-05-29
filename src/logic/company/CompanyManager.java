@@ -12,8 +12,8 @@ public class CompanyManager {
 		return companies;
 	}
 
-	public void addCompany(Company c) {
-		companies.add(c);
+	public void createCompany(String name, String address, String phone, String sector) {
+		companies.add(new Company(name, address, phone, sector));
 	}
 
     public void removeCompany(String companyId) {
