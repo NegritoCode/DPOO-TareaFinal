@@ -3,7 +3,7 @@ package runner;
 import gui.HomeScreen;
 import gui.Login;
 import gui.candidate.CandidateManagerScreen;
-import utils.ScreenManager;
+import utils.Navigation;
 
 import java.awt.EventQueue;
 
@@ -14,8 +14,8 @@ public class Runner {
 				try {
 					new Login().setVisible(true);
 					
-					ScreenManager.register("Home", new HomeScreen());
-					ScreenManager.register("CandidateManager", new CandidateManagerScreen());
+					Navigation.register("Home", new HomeScreen());
+					Navigation.register("CandidateManager", new CandidateManagerScreen());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
