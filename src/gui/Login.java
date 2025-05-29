@@ -25,7 +25,7 @@ public class Login extends JFrame {
 
 
 
-	public Login() {
+	public Login(HomeScreen homeScreen) {
 		setTitle("Iniciar Sesi\u00F3n");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 534, 300);
@@ -68,6 +68,7 @@ public class Login extends JFrame {
 				if (usernameField.getText().equals("admin") && passwordField.getText().equals("admin")) {
 					JOptionPane.showMessageDialog(null, "Bienvenido");
 					dispose();
+					
 				} else
 					errorLabel.setVisible(true);
 					
