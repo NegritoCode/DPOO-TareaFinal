@@ -2,6 +2,8 @@ package runner;
 
 import gui.HomeScreen;
 import gui.Login;
+import gui.candidate.CandidateManagerScreen;
+import utils.ScreenManager;
 
 import java.awt.EventQueue;
 
@@ -10,11 +12,10 @@ public class Runner {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					final HomeScreen homeScreen = new HomeScreen();
-					homeScreen.setVisible(true);
-					homeScreen.setEnabled(false);
-					Login login = new Login(homeScreen);
-					login.setVisible(true);
+					new Login().setVisible(true);
+					
+					ScreenManager.register("Home", new HomeScreen());
+					ScreenManager.register("CandidateManager", new CandidateManagerScreen());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

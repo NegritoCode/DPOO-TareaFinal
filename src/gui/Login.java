@@ -4,6 +4,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import utils.ScreenManager;
+
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 
@@ -23,9 +26,7 @@ public class Login extends JFrame {
 	private JTextField usernameField;
 	private JPasswordField passwordField;
 
-
-
-	public Login(HomeScreen homeScreen) {
+	public Login() {
 		setTitle("Iniciar Sesi\u00F3n");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 534, 300);
@@ -54,7 +55,6 @@ public class Login extends JFrame {
 		passwordLabel.setForeground(Color.WHITE);
 		contentPane.add(passwordLabel);
 
-
 		final JLabel errorLabel = new JLabel("Nombre de usuario o contrase\u00F1a incorrecto");
 		errorLabel.setBounds(10, 151, 338, 20);
 		errorLabel.setForeground(Color.RED);
@@ -68,10 +68,10 @@ public class Login extends JFrame {
 				if (usernameField.getText().equals("admin") && passwordField.getText().equals("admin")) {
 					JOptionPane.showMessageDialog(null, "Bienvenido");
 					dispose();
-					
+					ScreenManager.show("Home");
 				} else
 					errorLabel.setVisible(true);
-					
+
 			}
 		});
 		loginButton.setBounds(185, 227, 119, 23);
@@ -79,13 +79,10 @@ public class Login extends JFrame {
 
 		JLabel imageLabel = new JLabel("New label");
 		imageLabel.setBounds(379, 49, 129, 122);
-		imageLabel.setIcon(new ImageIcon("C:\\Users\\Negrito\\Pictures\\Flux_Dev_A_modern_and_sleek_illustration_for_a_login_page_of_a_3.jpg"));
+		imageLabel.setIcon(new ImageIcon(
+				"C:\\Users\\Negrito\\Pictures\\Flux_Dev_A_modern_and_sleek_illustration_for_a_login_page_of_a_3.jpg"));
 		imageLabel.setForeground(Color.WHITE);
 		contentPane.add(imageLabel);
-
-
-
-
 
 	}
 }

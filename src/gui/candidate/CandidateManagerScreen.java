@@ -99,10 +99,6 @@ public class CandidateManagerScreen extends JFrame {
                     candidate.getXpYears()
             });
         }
-    }
-    
-    public static void open() {
-        CandidateManagerScreen screen = new CandidateManagerScreen();
-        screen.setVisible(true);
+        
     }
 }

@@ -1,9 +1,6 @@
 package gui;
 
-import gui.candidate.CandidateManagerScreen;
-
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import utils.ScreenManager;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,22 +16,6 @@ import java.awt.event.ActionEvent;
 public class HomeScreen extends JFrame {
 
 	private JPanel contentPane;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					HomeScreen frame = new HomeScreen();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -61,7 +42,7 @@ public class HomeScreen extends JFrame {
 		JButton btnCandidatos = new JButton("Candidatos");
 		btnCandidatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				CandidateManagerScreen.open();
+				ScreenManager.show("CandidateManager");
 			}
 		});
 		btnCandidatos.setBounds(149, 11, 134, 23);
