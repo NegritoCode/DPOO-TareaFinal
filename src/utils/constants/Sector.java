@@ -1,5 +1,7 @@
 package utils.constants;
 
+import java.util.Random;
+
 public class Sector {
     public static final String[] SECTORS = {
             "turismo",
@@ -13,4 +15,9 @@ public class Sector {
             "transporte",
             "comercio"
     };
+
+    public static String getRandomSector() {
+        Random random = new Random();
+        return SECTORS[random.nextInt(SECTORS.length)];
+    }
 }
