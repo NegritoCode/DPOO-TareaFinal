@@ -9,7 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 public class HomeScreen extends JFrame {
 
-	private JPanel contentPane;
+	private JPanel contentPanel;
 
 	/**
 	 * Launch the application.
@@ -33,10 +33,10 @@ public class HomeScreen extends JFrame {
 	public HomeScreen() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
+		contentPanel = new JPanel();
+		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPanel.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPanel);
 	}
 
 }

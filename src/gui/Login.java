@@ -1,8 +1,5 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -23,8 +20,8 @@ import javax.swing.JPasswordField;
 public class Login extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField usuario;
-	private JPasswordField contrasenna;
+	private JTextField usernameField;
+	private JPasswordField passwordField;
 
 
 
@@ -38,53 +35,52 @@ public class Login extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		usuario = new JTextField();
-		usuario.setBounds(10, 69, 338, 20);
-		contentPane.add(usuario);
-		usuario.setColumns(10);
+		usernameField = new JTextField();
+		usernameField.setBounds(10, 69, 338, 20);
+		contentPane.add(usernameField);
+		usernameField.setColumns(10);
 
-		contrasenna = new JPasswordField();
-		contrasenna.setBounds(10, 125, 338, 20);
-		contentPane.add(contrasenna);
+		passwordField = new JPasswordField();
+		passwordField.setBounds(10, 125, 338, 20);
+		contentPane.add(passwordField);
 
-		JLabel lblNombreDeUsuario = new JLabel("Nombre de usuario:");
-		lblNombreDeUsuario.setBounds(10, 49, 129, 14);
-		lblNombreDeUsuario.setForeground(Color.WHITE);
-		contentPane.add(lblNombreDeUsuario);
+		JLabel usernameLabel = new JLabel("Nombre de usuario:");
+		usernameLabel.setBounds(10, 49, 129, 14);
+		usernameLabel.setForeground(Color.WHITE);
+		contentPane.add(usernameLabel);
 
-		JLabel lblContrasea = new JLabel("Contrase\u00F1a:");
-		lblContrasea.setBounds(10, 100, 107, 14);
-		lblContrasea.setForeground(Color.WHITE);
-		contentPane.add(lblContrasea);
+		JLabel passwordLabel = new JLabel("Contrase\u00F1a:");
+		passwordLabel.setBounds(10, 100, 107, 14);
+		passwordLabel.setForeground(Color.WHITE);
+		contentPane.add(passwordLabel);
 
 
-		final JLabel aviso = new JLabel("Nombre de usuario o contrase\u00F1a incorrecto");
-		aviso.setBounds(10, 151, 338, 20);
-		aviso.setForeground(Color.RED);
-		contentPane.add(aviso);
-		aviso.setVisible(false);
+		final JLabel errorLabel = new JLabel("Nombre de usuario o contrase\u00F1a incorrecto");
+		errorLabel.setBounds(10, 151, 338, 20);
+		errorLabel.setForeground(Color.RED);
+		contentPane.add(errorLabel);
+		errorLabel.setVisible(false);
 
-		JButton btnIniciarSesin = new JButton("Iniciar Sesi\u00F3n");
-		btnIniciarSesin.addActionListener(new ActionListener() {
+		JButton loginButton = new JButton("Iniciar Sesi\u00F3n");
+		loginButton.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
-				if (usuario.getText().equals("admin")&& contrasenna.getText().equals("admin")){
-					JOptionPane.showMessageDialog(null,"Bienvenido");
-			        dispose();
-				}
-				else
-					aviso.setVisible(true);
+				if (usernameField.getText().equals("admin") && passwordField.getText().equals("admin")) {
+					JOptionPane.showMessageDialog(null, "Bienvenido");
+					dispose();
+				} else
+					errorLabel.setVisible(true);
 					
 			}
 		});
-		btnIniciarSesin.setBounds(185, 227, 119, 23);
-		contentPane.add(btnIniciarSesin);
+		loginButton.setBounds(185, 227, 119, 23);
+		contentPane.add(loginButton);
 
-		JLabel label = new JLabel("New label");
-		label.setBounds(379, 49, 129, 122);
-		label.setIcon(new ImageIcon("C:\\Users\\Negrito\\Pictures\\Flux_Dev_A_modern_and_sleek_illustration_for_a_login_page_of_a_3.jpg"));
-		label.setForeground(Color.WHITE);
-		contentPane.add(label);
+		JLabel imageLabel = new JLabel("New label");
+		imageLabel.setBounds(379, 49, 129, 122);
+		imageLabel.setIcon(new ImageIcon("C:\\Users\\Negrito\\Pictures\\Flux_Dev_A_modern_and_sleek_illustration_for_a_login_page_of_a_3.jpg"));
+		imageLabel.setForeground(Color.WHITE);
+		contentPane.add(imageLabel);
 
 
 
