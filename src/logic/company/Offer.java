@@ -17,8 +17,6 @@ public class Offer {
     }
 
     public boolean isElegibleTo(Candidate candidate) {
-        // TODO: falta realizar la implementación de la verificación según
-        //       requerimientos de la oferta vs requerimientos del candidato
         return branch.equals(candidate.getBranch()) && available;
     }
 

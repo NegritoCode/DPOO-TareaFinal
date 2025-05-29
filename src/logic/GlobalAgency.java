@@ -2,6 +2,7 @@ package logic;
 
 import logic.candidate.Candidate;
 import logic.company.Company;
+import logic.company.Offer;
 import utils.Generator;
 
 public class GlobalAgency {
@@ -15,12 +16,15 @@ public class GlobalAgency {
             instance = new Agency("Los papus");
 
             // TODO: inicializar datos aqui
-            for (Company company : Generator.generateCompanies(21)) {
-                instance.getCompanyManager().createCompany(
+            for (Company company : Generator.generateOffers(20, Generator.generateCompanies(21))) {
+                String id = instance.getCompanyManager().createCompany(
                         company.getName(),
                         company.getAddress(),
                         company.getPhone(),
-                        company.getSector());
+                        company.getSector()).getId();
+                for (Offer offer : company.getOffers()) {
+                    instance.createOffer(id, offer.getBranch(), offer.getSalary());
+                }
             }
 
             for (Candidate candidate : Generator.generateCandidates(21)) {

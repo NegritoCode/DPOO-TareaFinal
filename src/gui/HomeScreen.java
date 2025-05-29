@@ -60,7 +60,7 @@ public class HomeScreen extends JFrame {
 		JButton btnReportes = createModernButton("Reportes", new ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent e) {
-				Navigation.goTo("ReportManager");
+				Navigation.goTo("MonthView");
 			}
 		});
 		buttonPanel.add(btnReportes);

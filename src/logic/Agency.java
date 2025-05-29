@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import logic.candidate.*;
 import logic.company.*;
 import logic.interview.*;
+import utils.Id;
 
 public class Agency {
 
@@ -98,11 +99,21 @@ public class Agency {
 		return offers;
 	}
 
+	public void createOffer(String companyId, String branch, double salary) {
+		Offer offer = companyManager.createOffer(companyId, branch, salary);
+		
+		for (Candidate candidate : candidates) {
+			if (offer.isElegibleTo(candidate)) {
+				createInterview(candidate.getCid(), companyId, offer.getId());
+			}
+		}
+	}
+
 	public Candidate createCandidate(String cid, String branch, String name, char sex, String address, String phone,
 			String schoolLevel, String speciality, int xpYears) {
 
 		Candidate candidate;
-		if (branch.equals("seguridad")) {
+		if (branch.equals("custodio")) {
 			candidate = new SegurityCandidate(cid, branch, name, sex, address, phone, schoolLevel, speciality, xpYears,
 					"", "");
 		} else if (branch.equals("turismo")) {
@@ -111,9 +122,30 @@ public class Agency {
 		} else {
 			candidate = new Candidate(cid, branch, name, sex, address, phone, schoolLevel, speciality, xpYears);
 		}
-		
+
 		candidates.add(candidate);
+		
+		for (Company company : companyManager.getCompanies()) {
+			for (Offer offer : company.getOffers()) {
+				if (offer.isElegibleTo(candidate)) {
+					createInterview(candidate.getCid(), company.getId(), offer.getId());
+				}
+			}
+		}
 
 		return candidate;
+	}
+
+	private void createInterview(String candidateId, String companyId, String offerId) {
+		MonthRegister month = null;
+		if (months.isEmpty()
+				|| months.get(months.size() - 1).getDays().size() == months.get(months.size() - 1).getMaxDay()) {
+			month = new MonthRegister(Id.generateId("MONTH"), 30);
+			months.add(month);
+		} else {
+			month = months.get(months.size() - 1);
+		}
+
+		month.createInterview(candidateId, companyId, offerId);
 	}
 }

@@ -4,6 +4,7 @@ import gui.HomeScreen;
 import gui.Login;
 import gui.candidate.CandidateManagerScreen;
 import gui.company.CompanyManagerScreen;
+import gui.interview.MonthViewScreen;
 import gui.offer.OfferManagerScreen;
 import utils.Navigation;
 
@@ -20,6 +21,7 @@ public class Runner {
 					Navigation.register("CandidateManager", new CandidateManagerScreen());
 					Navigation.register("CompanyManager", new CompanyManagerScreen());
 					Navigation.register("OfferManager", new OfferManagerScreen());
+					Navigation.register("MonthView", new MonthViewScreen());
 
 				} catch (Exception e) {
 					e.printStackTrace();

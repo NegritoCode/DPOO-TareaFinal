@@ -9,6 +9,7 @@ import utils.constants.Sector;
 import utils.constants.Specialty;
 import logic.candidate.Candidate;
 import logic.company.Company;
+import logic.company.Offer;
 
 public class Generator {
     // Address components
@@ -101,6 +102,20 @@ public class Generator {
             String sector = Sector.getRandomSector();
 
             companies.add(new Company(name, address, phone, sector));
+        }
+
+        return companies;
+    }
+
+    public static ArrayList<Company> generateOffers(int quantity, ArrayList<Company> companies) {
+        Random random = new Random();
+
+        for (int i = 0; i < quantity; i++) {
+            Company company = companies.get(random.nextInt(companies.size()));
+            String branch = Branch.getRandomBranch();
+            double salary = 1000 + random.nextDouble() * 9000; // Salario entre 1000 y 10000
+
+            company.createOffer(branch, salary);
         }
 
         return companies;

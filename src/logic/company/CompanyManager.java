@@ -43,12 +43,14 @@ public class CompanyManager {
         return company;
     }
 
-    public void createCompany(String name, String address, String phone, String sector) {
-        companies.add(new Company(name, address, phone, sector));
+    public Company createCompany(String name, String address, String phone, String sector) {
+        Company company = new Company(name, address, phone, sector);
+        companies.add(company);
+        return company;
     }
 
-    public void createOffer(String companyId, String branch, double salary) {
-        getCompanyById(companyId).createOffer(branch, salary);
+    public Offer createOffer(String companyId, String branch, double salary) {
+        return getCompanyById(companyId).createOffer(branch, salary);
     }
 
     public ArrayList<Company> getCompaniesWithoutInterviews() {
