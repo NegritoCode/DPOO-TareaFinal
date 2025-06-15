@@ -18,6 +18,7 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 import javax.swing.JTable;
 import javax.swing.JLabel;
@@ -30,14 +31,22 @@ import javax.swing.SwingConstants;
 import logic.Agency;
 import logic.GlobalAgency;
 import logic.candidate.Candidate;
+import logic.company.Company;
 import logic.company.Offer;
 import logic.interview.Interview;
+
+import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 
 public class ReportsHomeScreen extends JFrame {
 
 	private JPanel contentPane;
 	private DefaultTableModel tableModel;
+	
 	private JTable table;
+	private JTextField btnSearch;
+	
+	
 
 	/**
 	 * Launch the application.
@@ -59,8 +68,8 @@ public class ReportsHomeScreen extends JFrame {
 	 * Create the frame.
 	 */
 	public ReportsHomeScreen() {
-		Agency agency = GlobalAgency.getInstance();
-
+		final Agency agency = GlobalAgency.getInstance();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 935, 495);
 		contentPane = new JPanel();
@@ -118,6 +127,7 @@ public class ReportsHomeScreen extends JFrame {
 
 		table = new JTable();
 		table.setModel(mejoresOfertasModel);
+		table.setEnabled(false);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 69, 589, 354);
@@ -147,6 +157,52 @@ public class ReportsHomeScreen extends JFrame {
 
 
 		panel_1.add(titleTab);
+		
+		btnSearch = new JTextField();
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Company company = null;
+				ArrayList<Offer> offersByCompany = new ArrayList<Offer>();
+				for (Company c : agency.getCompanyManager().getCompanies())
+					if(c.getName().equalsIgnoreCase(btnSearch.getText()))
+						company = c;
+				for (Offer of : company.getOffers())
+					for (Offer o : agency.getBestOffers())
+						if(of.compareTo(o))
+						offersByCompany.add(o);
+				mejoresOfertasModel.setRowCount(0);
+				for (Offer o : offersByCompany)
+					mejoresOfertasModel.addRow(new Object[] {o.getCompanyId(),o.getBranch(),o.getSalary()});
+							
+				
+				
+				
+			}
+		});
+		btnSearch.setBounds(10, 38, 179, 20);
+		panel_1.add(btnSearch);
+		btnSearch.setColumns(10);
+		
+		JLabel lblBuscar = new JLabel("Buscar");
+		lblBuscar.setBounds(10, 21, 46, 14);
+		panel_1.add(lblBuscar);
+		
+		JButton button = new JButton("");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mejoresOfertasModel.setRowCount(0);
+				for (Offer offer : agency.getBestOffers()) {
+					mejoresOfertasModel.addRow(new Object[] {
+							agency.getCompanyManager().getCompanyById(offer.getCompanyId()).getName(),
+							offer.getBranch(),
+							offer.getSalary() + ""
+					});
+				}
+			}
+		});
+		button.setIcon(new ImageIcon(ReportsHomeScreen.class.getResource("/com/sun/javafx/scene/control/skin/modena/dialog-error.png")));
+		button.setBounds(185, 38, 37, 20);
+		panel_1.add(button);
 
 		final JButton btnEntrevistasPorDia = new JButton("Entrevistas por dia");
 		btnEntrevistasPorDia.addActionListener(new ActionListener() {

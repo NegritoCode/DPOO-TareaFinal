@@ -1,9 +1,10 @@
 package logic.company;
 
+
 import logic.candidate.Candidate;
 import utils.Id;
 
-public class Offer {
+public class Offer  {
     private String id;
     private String branch;
     private double salary;
@@ -18,6 +19,14 @@ public class Offer {
         this.companyId = companyId;
         setAvailable(true); // disponible por defecto
     }
+	public boolean compareTo(Offer o){
+		if (id.equals(o.getId()))
+			return true;
+		else
+			return false;
+					
+		
+	}
 
     public boolean isElegibleTo(Candidate candidate) {
         return branch.equals(candidate.getBranch()) && available;

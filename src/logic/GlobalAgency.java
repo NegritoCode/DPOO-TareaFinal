@@ -26,7 +26,7 @@ public class GlobalAgency {
                 }
             }
 
-            for (Candidate candidate : Generator.generateCandidates(21)) {
+            for (Candidate candidate : Generator.generateCandidates(50)) {
                 instance.createCandidate(
                         candidate.getCid(),
                         candidate.getBranch(),
