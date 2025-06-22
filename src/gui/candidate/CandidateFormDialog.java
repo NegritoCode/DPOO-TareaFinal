@@ -14,7 +14,9 @@ import utils.constants.Branch;
 import utils.constants.Specialty;
 
 public class CandidateFormDialog extends JDialog {
-    private JTextField cidField, nameField, phoneField, xpYearsField, addressField, schoolLevelField;
+	private static final long serialVersionUID = 1L;
+	
+	private JTextField cidField, nameField, phoneField, xpYearsField, addressField, schoolLevelField;
     private JComboBox<Character> sexComboBox;
     private JComboBox<String> branchComboBox, specialityComboBox;
     private Agency agency;

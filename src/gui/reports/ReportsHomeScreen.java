@@ -1,16 +1,11 @@
 package gui.reports;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
-
-import java.awt.SystemColor;
 
 import javax.swing.UIManager;
 
@@ -39,37 +34,20 @@ import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 
 public class ReportsHomeScreen extends JFrame {
+	private static final long serialVersionUID = 1L;
 
 	private JPanel contentPane;
 	private DefaultTableModel tableModel;
-	
+
 	private JTable table;
 	private JTextField btnSearch;
-	
-	
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ReportsHomeScreen frame = new ReportsHomeScreen();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
 	public ReportsHomeScreen() {
 		final Agency agency = GlobalAgency.getInstance();
-		
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 935, 495);
 		contentPane = new JPanel();
@@ -87,41 +65,24 @@ public class ReportsHomeScreen extends JFrame {
 		titleTab.setBorder(UIManager.getBorder("EditorPane.border"));
 		titleTab.setFont(new Font("Tahoma", Font.PLAIN, 21));
 
-		final DefaultTableModel mejoresOfertasModel = new DefaultTableModel(
-				new Object[][] {
-						{null, null, null},
-				},
-				new String[] {
-						"Compañía", "Rama", "Salario"
-				}
-				);
+		final DefaultTableModel mejoresOfertasModel = new DefaultTableModel(new Object[][] { { null, null, null }, },
+				new String[] { "Compañía", "Rama", "Salario" });
 
 		for (Offer offer : agency.getBestOffers()) {
-			mejoresOfertasModel.addRow(new Object[] {
-					agency.getCompanyManager().getCompanyById(offer.getCompanyId()).getName(),
-					offer.getBranch(),
-					offer.getSalary() + ""
-			});
+			mejoresOfertasModel
+					.addRow(new Object[] { agency.getCompanyManager().getCompanyById(offer.getCompanyId()).getName(),
+							offer.getBranch(), offer.getSalary() + "" });
 		}
 
 		final DefaultTableModel entrevistasPorDiaModel = new DefaultTableModel(
-				new Object[][] {
-						{null, null, null, null},
-				},
-				new String[] {
-						"Candidato", "Mes", "Día", "Oferta"
-				}
-				);
-		
+				new Object[][] { { null, null, null, null }, }, new String[] { "Candidato", "Mes", "Día", "Oferta" });
+
 		for (Candidate candidate : agency.getCandidates()) {
 			for (Interview interview : agency.getInterviewsByCandidate(candidate.getCid())) {
-				
-				entrevistasPorDiaModel.addRow(new Object[] {
-						agency.getCandidateByCid(interview.getCandidateCid()).getName(),
-						interview.getMonthlyId(),
-						interview.getDayId(),
-						interview.getOfferId(),
-				});
+
+				entrevistasPorDiaModel
+						.addRow(new Object[] { agency.getCandidateByCid(interview.getCandidateCid()).getName(),
+								interview.getMonthlyId(), interview.getDayId(), interview.getOfferId(), });
 			}
 		}
 
@@ -130,13 +91,13 @@ public class ReportsHomeScreen extends JFrame {
 		table.setEnabled(false);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 69, 589, 354);
+		scrollPane.setBounds(10, 76, 589, 347);
 		panel_1.add(scrollPane);
 		scrollPane.setViewportView(table);
 
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(0, 102, 255));
-		panel.setBounds(10, 11, 268, 434);
+		panel.setBounds(0, -15, 278, 491);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
@@ -151,57 +112,52 @@ public class ReportsHomeScreen extends JFrame {
 		btnMejoresOfertas.setBorderPainted(false);
 		btnMejoresOfertas.setForeground(Color.WHITE);
 		btnMejoresOfertas.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnMejoresOfertas.setBounds(10, 147, 248, 43);
+		btnMejoresOfertas.setBounds(10, 92, 248, 43);
 		panel.add(btnMejoresOfertas);
 		panel_1.setLayout(null);
 
-
 		panel_1.add(titleTab);
-		
+
 		btnSearch = new JTextField();
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Company company = null;
 				ArrayList<Offer> offersByCompany = new ArrayList<Offer>();
 				for (Company c : agency.getCompanyManager().getCompanies())
-					if(c.getName().equalsIgnoreCase(btnSearch.getText()))
+					if (c.getName().equalsIgnoreCase(btnSearch.getText()))
 						company = c;
 				for (Offer of : company.getOffers())
 					for (Offer o : agency.getBestOffers())
-						if(of.compareTo(o))
-						offersByCompany.add(o);
+						if (of.compareTo(o))
+							offersByCompany.add(o);
 				mejoresOfertasModel.setRowCount(0);
 				for (Offer o : offersByCompany)
-					mejoresOfertasModel.addRow(new Object[] {o.getCompanyId(),o.getBranch(),o.getSalary()});
-							
-				
-				
-				
+					mejoresOfertasModel.addRow(new Object[] { o.getCompanyId(), o.getBranch(), o.getSalary() });
+
 			}
 		});
-		btnSearch.setBounds(10, 38, 179, 20);
+		btnSearch.setBounds(10, 50, 179, 20);
 		panel_1.add(btnSearch);
 		btnSearch.setColumns(10);
-		
+
 		JLabel lblBuscar = new JLabel("Buscar");
-		lblBuscar.setBounds(10, 21, 46, 14);
+		lblBuscar.setBounds(10, 33, 46, 14);
 		panel_1.add(lblBuscar);
-		
+
 		JButton button = new JButton("");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				mejoresOfertasModel.setRowCount(0);
 				for (Offer offer : agency.getBestOffers()) {
-					mejoresOfertasModel.addRow(new Object[] {
-							agency.getCompanyManager().getCompanyById(offer.getCompanyId()).getName(),
-							offer.getBranch(),
-							offer.getSalary() + ""
-					});
+					mejoresOfertasModel.addRow(
+							new Object[] { agency.getCompanyManager().getCompanyById(offer.getCompanyId()).getName(),
+									offer.getBranch(), offer.getSalary() + "" });
 				}
 			}
 		});
-		button.setIcon(new ImageIcon(ReportsHomeScreen.class.getResource("/com/sun/javafx/scene/control/skin/modena/dialog-error.png")));
-		button.setBounds(185, 38, 37, 20);
+		button.setIcon(new ImageIcon(
+				ReportsHomeScreen.class.getResource("/com/sun/javafx/scene/control/skin/modena/dialog-error.png")));
+		button.setBounds(185, 50, 37, 20);
 		panel_1.add(button);
 
 		final JButton btnEntrevistasPorDia = new JButton("Entrevistas por dia");
@@ -216,28 +172,48 @@ public class ReportsHomeScreen extends JFrame {
 		btnEntrevistasPorDia.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnEntrevistasPorDia.setContentAreaFilled(false);
 		btnEntrevistasPorDia.setBorderPainted(false);
-		btnEntrevistasPorDia.setBounds(10, 214, 248, 43);
+		btnEntrevistasPorDia.setBounds(10, 163, 248, 43);
 		panel.add(btnEntrevistasPorDia);
 
+		JButton btnReport3 = new JButton("Reporte 3");
+		btnReport3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnReport3.setForeground(Color.WHITE);
+		btnReport3.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnReport3.setContentAreaFilled(false);
+		btnReport3.setBorderPainted(false);
+		btnReport3.setBounds(10, 237, 248, 43);
+		panel.add(btnReport3);
+
+		JButton btnReport4 = new JButton("Reporte 4");
+		btnReport4.setForeground(Color.WHITE);
+		btnReport4.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnReport4.setContentAreaFilled(false);
+		btnReport4.setBorderPainted(false);
+		btnReport4.setBounds(10, 310, 248, 43);
+		panel.add(btnReport4);
+
+		// Table
+		String[] columnNames = { "Nombre", "Dirección", "Teléfono", "Sector" };
+		tableModel = new DefaultTableModel(columnNames, 1);
+		tableModel.addRow(new Object[] { "w", "ww", "ooo", "rtt" });
+		
+		//
+		// Boton para regresar
+		//
 		JButton btnAtrs = new JButton("Atrás");
 		btnAtrs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Navigation.goTo("Home");
 			}
-
 		});
 		btnAtrs.setBorder(new LineBorder(new Color(255, 255, 255)));
 		btnAtrs.setForeground(Color.WHITE);
 		btnAtrs.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnAtrs.setContentAreaFilled(false);
-		btnAtrs.setBounds(10, 380, 116, 43);
+		btnAtrs.setBounds(22, 411, 116, 43);
 		panel.add(btnAtrs);
-
-
-
-		// Table
-		String[] columnNames = { "Nombre", "Dirección", "Teléfono", "Sector" };
-		tableModel = new DefaultTableModel(columnNames, 1);
-		tableModel.addRow(new Object[] {"w", "ww", "ooo", "rtt"});
 	}
 }
