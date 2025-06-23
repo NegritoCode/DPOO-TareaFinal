@@ -94,6 +94,8 @@ public class OfferFormDialog extends JDialog {
             branchComboBox.setSelectedItem(offer.getBranch());
             salaryField.setText(String.valueOf(offer.getSalary()));
         }
+        
+        setVisible(true);
     }
 
     private void saveOffer() {

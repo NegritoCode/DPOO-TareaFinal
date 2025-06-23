@@ -9,27 +9,32 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
+
 import logic.Agency;
 import logic.GlobalAgency;
 import logic.company.Company;
 import logic.company.Offer;
 import utils.Navigation;
 import utils.constants.Sector;
+import gui.components.FilterDialog;
 import gui.components.MButton;
 import gui.components.MTable;
+import gui.components.SearchField;
 
 public class CompanyManagerScreen extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private Agency agency;
 	private MTable companyTable;
-	private DefaultTableModel tableModel;
+	private DefaultTableModel companyTableModel;
+	private Company currentCompany;
 	private JPanel companyDetailsPanel;
-	private JTextField searchField;
-	private ArrayList<String> selectedSectors;
+	private SearchField searchField;
+	private HashMap<String, Boolean> sectorsFilter;
 	private JTable offerTable;
 	private DefaultTableModel offerTableModel;
+	private Offer currentOffer;
 
 	public CompanyManagerScreen() {
 		this.agency = GlobalAgency.getInstance();
@@ -50,26 +55,20 @@ public class CompanyManagerScreen extends JFrame {
 			}
 		});
 
-		searchField = new JTextField(20);
-		searchField.setFont(new Font("Roboto", Font.PLAIN, 14));
-		searchField.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder(new Color(224, 224, 224)), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-		JButton searchButton = new MButton("Buscar", new ActionListener() {
+		searchField = new SearchField(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String query = searchField.getText().trim();
-				searchCompanies(query);
+				renderCompanies();
 			}
 		});
 
 		JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		searchPanel.add(searchField);
-		searchPanel.add(searchButton);
 		topPanel.add(backButton, BorderLayout.WEST);
 		topPanel.add(searchPanel, BorderLayout.EAST);
 		getContentPane().add(topPanel, BorderLayout.NORTH);
 
-		selectedSectors = new ArrayList<>(Arrays.asList(Sector.SECTORS));
+		sectorsFilter = FilterDialog.listToFilter(Sector.SECTORS);
 
 		JButton filterButton = new MButton("Filtrar por Sector", new ActionListener() {
 			@Override
@@ -91,12 +90,13 @@ public class CompanyManagerScreen extends JFrame {
 		centerPanel.setBackground(new Color(245, 245, 245));
 
 		String[] columnNames = { "Nombre", "Dirección", "Sector" };
-		tableModel = new DefaultTableModel(columnNames, 0);
-		companyTable = new MTable(tableModel);
+		companyTableModel = new DefaultTableModel(columnNames, 0);
+		companyTable = new MTable(companyTableModel);
 
 		JScrollPane leftScrollPane = new JScrollPane(companyTable);
 		centerPanel.add(leftScrollPane);
-		String[] offerColumnNames = { "Rama", "Salario", "Disponible" };
+
+		String[] offerColumnNames = { "No.", "Rama", "Salario", "Disponible" };
 		offerTableModel = new DefaultTableModel(offerColumnNames, 0);
 		getContentPane().add(centerPanel, BorderLayout.CENTER);
 		getContentPane().add(centerPanel, BorderLayout.CENTER);
@@ -135,12 +135,9 @@ public class CompanyManagerScreen extends JFrame {
 		JButton addOfferButton = new MButton("Agregar Oferta", "small", new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int selectedRow = companyTable.getSelectedRow();
-				if (selectedRow != -1) {
-					String companyName = (String) tableModel.getValueAt(selectedRow, 0);
-					Company company = agency.getCompanyManager().getCompanyByName(companyName);
-					new OfferFormDialog(CompanyManagerScreen.this, company).setVisible(true);
-					renderOffers(company);
+				if (currentCompany != null) {
+					new OfferFormDialog(CompanyManagerScreen.this, currentCompany);
+					renderOffers();
 				} else {
 					JOptionPane.showMessageDialog(CompanyManagerScreen.this,
 							"Seleccione una empresa para agregar una oferta.");
@@ -150,13 +147,9 @@ public class CompanyManagerScreen extends JFrame {
 		JButton editOfferButton = new MButton("Editar Oferta", "small", new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int selectedRow = offerTable.getSelectedRow();
-				if (selectedRow != -1) {
-					String companyName = (String) tableModel.getValueAt(companyTable.getSelectedRow(), 0);
-					Company company = agency.getCompanyManager().getCompanyByName(companyName);
-					Offer offer = company.getOffers().get(selectedRow);
-					new OfferFormDialog(CompanyManagerScreen.this, company, offer).setVisible(true);
-					renderOffers(company);
+				if (currentOffer != null) {
+					new OfferFormDialog(CompanyManagerScreen.this, currentCompany, currentOffer).setVisible(true);
+					renderOffers();
 				} else {
 					JOptionPane.showMessageDialog(CompanyManagerScreen.this, "Seleccione una oferta para editar.");
 				}
@@ -165,12 +158,9 @@ public class CompanyManagerScreen extends JFrame {
 		JButton deleteOfferButton = new MButton("Eliminar Oferta", "small", new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int selectedRow = offerTable.getSelectedRow();
-				if (selectedRow != -1) {
-					String companyName = (String) tableModel.getValueAt(companyTable.getSelectedRow(), 0);
-					Company company = agency.getCompanyManager().getCompanyByName(companyName);
-					company.getOffers().remove(selectedRow);
-					renderOffers(company);
+				if (currentOffer != null) {
+					currentOffer.setAvailable(!currentOffer.isAvailable());
+					renderOffers();
 				} else {
 					JOptionPane.showMessageDialog(CompanyManagerScreen.this,
 							"Primero seleccione una oferta para eliminar.");
@@ -193,115 +183,96 @@ public class CompanyManagerScreen extends JFrame {
 				renderCompanies();
 			}
 		});
-		addButton.setFont(new Font("Roboto", Font.BOLD, 24));
-		addButton.setPreferredSize(new Dimension(50, 50));
 		bottomPanel.add(addButton);
-		getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 
 		// Load data
 		renderCompanies();
 
-		// Button actions
-		backButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Navigation.goTo("Home");
-			}
-		});
-
-		searchButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String query = searchField.getText().trim();
-				searchCompanies(query);
-			}
-		});
-
-		addButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new CompanyFormDialog(CompanyManagerScreen.this, null).setVisible(true);
-				renderCompanies();
-			}
-		});
-
-		filterButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				showCompanyFilterDialog();
-			}
-		});
-
 		companyTable.addMouseListener(new MouseInputAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				int selectedRow = companyTable.getSelectedRow();
 				if (selectedRow != -1) {
-					String name = (String) tableModel.getValueAt(selectedRow, 0);
-					Company company = agency.getCompanyManager().getCompanyByName(name);
-					displayCompanyDetails(company);
-					renderOffers(company);
+					String name = (String) companyTableModel.getValueAt(selectedRow, 0);
+					currentCompany = agency.getCompanyManager().getCompanyByName(name);
+					renderCompanyDetails();
+					renderOffers();
+				}
+			}
+		});
+		offerTable.addMouseListener(new MouseInputAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (currentCompany != null) {
+					String index = (String) offerTableModel.getValueAt(offerTable.getSelectedRow(), 0);
+					currentOffer = currentCompany.getOffers().get(Integer.parseInt(index));
+
+					deleteOfferButton.setText(currentOffer.isAvailable() ? "Eliminar Oferta" : "Habilitar Oferta");
+
 				}
 			}
 		});
 
-		companyTable.addMouseListener(new MouseInputAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				int selectedRow = companyTable.getSelectedRow();
-				if (selectedRow != -1) {
-					String name = (String) tableModel.getValueAt(selectedRow, 0);
-					Company company = agency.getCompanyManager().getCompanyByName(name);
-					displayCompanyDetails(company);
-				}
-			}
-		});
 	}
 
 	private void showCompanyFilterDialog() {
-		new CompanyFilterDialog(this, selectedSectors);
+		FilterDialog dialog = new FilterDialog(this, sectorsFilter);
+		sectorsFilter = dialog.getFilter();
+		renderCompanies();
 	}
 
 	public void renderCompanies() {
-		tableModel.setRowCount(0);
+		String query = searchField.getText();
+		companyTableModel.setRowCount(0);
 		for (Company company : agency.getCompanyManager().getCompanies()) {
-			if (selectedSectors.contains(company.getSector())) {
-				tableModel.addRow(new Object[] { company.getName(), company.getAddress(),
-						company.getSector() });
+			if ((company.getName().toLowerCase().contains(query) || company.getAddress().toLowerCase().contains(query))
+					&& sectorsFilter.get(company.getSector())) {
+				companyTableModel.addRow(new Object[] { company.getName(), company.getAddress(), company.getSector() });
 			}
 		}
 	}
 
-	private void searchCompanies(String query) {
-		tableModel.setRowCount(0);
-		for (Company company : agency.getCompanyManager().getCompanies()) {
-			if (company.getName().toLowerCase().contains(query.toLowerCase())
-					|| company.getAddress().toLowerCase().contains(query.toLowerCase())) {
-				tableModel.addRow(new Object[] { company.getName(), company.getSector() });
-			}
-		}
-	}
-
-	private void displayCompanyDetails(Company company) {
+	private void renderCompanyDetails() {
 		companyDetailsPanel.removeAll();
-		companyDetailsPanel.add(createDetailLabel("Nombre:", company.getName()));
-		companyDetailsPanel.add(createDetailLabel("Dirección:", company.getAddress()));
-		companyDetailsPanel.add(createDetailLabel("Teléfono:", company.getPhone()));
-		companyDetailsPanel.add(createDetailLabel("Sector:", company.getSector()));
-		companyDetailsPanel.add(createDetailLabel("Ofertas publicadas:", String.valueOf(company.getOffers().size())));
+		companyDetailsPanel.add(new DetailLabel("Nombre:", currentCompany.getName()));
+		companyDetailsPanel.add(new DetailLabel("Dirección:", currentCompany.getAddress()));
+		companyDetailsPanel.add(new DetailLabel("Teléfono:", currentCompany.getPhone()));
+		companyDetailsPanel.add(new DetailLabel("Sector:", currentCompany.getSector()));
+		companyDetailsPanel
+				.add(new DetailLabel("Ofertas publicadas:", String.valueOf(currentCompany.getOffers().size())));
 		companyDetailsPanel.revalidate();
 		companyDetailsPanel.repaint();
 	}
 
-	private JLabel createDetailLabel(String title, String value) {
-		JLabel label = new JLabel(String.format("<html><b>%s</b> %s</html>", title, value));
-		label.setFont(new Font("Roboto", Font.PLAIN, 14));
-		return label;
+	private class DetailLabel extends JLabel {
+
+		private static final long serialVersionUID = 1L;
+
+		public DetailLabel(String title, String value) {
+			super(String.format("<html><b>%s</b> %s</html>", title, value));
+			setFont(new Font("Roboto", Font.PLAIN, 14));
+
+		}
 	}
 
-	private void renderOffers(Company company) {
+	private void renderOffers() {
 		offerTableModel.setRowCount(0);
-		for (Offer offer : company.getOffers()) {
-			offerTableModel.addRow(new Object[] { offer.getBranch(), offer.getSalary(),
-					offer.isAvailable() ? "Sí" : "No" });
+		currentOffer = null;
+		if (currentCompany != null) {
+			ArrayList<Object[]> unavailableRows = new ArrayList<>();
+			int i = 0;
+			for (Offer offer : currentCompany.getOffers()) {
+				if (offer.isAvailable()) {
+					offerTableModel.addRow(new Object[] { i + "", offer.getBranch(), offer.getSalary(), "Sí" });
+				} else {
+					unavailableRows.add(new Object[] { i + "", offer.getBranch(), offer.getSalary(), "No" });
+				}
+				i++;
+			}
+			if (unavailableRows.size() > 0) {
+				offerTableModel.addRow(new Object[] {});
+				for (Object[] row : unavailableRows) {
+					offerTableModel.addRow(row);
+				}
+			}
 		}
 	}
 }
