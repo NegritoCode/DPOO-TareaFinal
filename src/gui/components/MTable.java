@@ -16,5 +16,6 @@ public class MTable extends JTable {
 		setGridColor(new Color(224, 224, 224));
 		setSelectionBackground(new Color(33, 150, 243));
 		setSelectionForeground(Color.WHITE);
+		setEnabled(false);
 	}
 }

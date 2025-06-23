@@ -1,5 +1,7 @@
 package gui.candidate;
 
+import gui.components.MTable;
+
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.table.DefaultTableModel;
@@ -11,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import logic.Agency;
 import logic.GlobalAgency;
 import logic.candidate.Candidate;
@@ -21,7 +24,7 @@ public class CandidateManagerScreen extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private Agency agency;
-	private JTable candidateTable;
+	private MTable candidateTable;
 	private DefaultTableModel tableModel;
 	private JTextArea candidateDetails;
 	private JTextField searchField;
@@ -86,7 +89,7 @@ public class CandidateManagerScreen extends JFrame {
 		centerPanel.setBackground(new Color(245, 245, 245));
 		String[] columnNames = { "Carnet", "Nombre", "Ramo" };
 		tableModel = new DefaultTableModel(columnNames, 0);
-		candidateTable = new JTable(tableModel);
+		candidateTable = new MTable(tableModel);
 		candidateTable.setFont(new Font("Roboto", Font.PLAIN, 14));
 		candidateTable.setRowHeight(25);
 		candidateTable.setGridColor(new Color(224, 224, 224));
@@ -159,6 +162,7 @@ public class CandidateManagerScreen extends JFrame {
 				}
 			}
 		});
+		
 	}
 
 	private void showBranchFilterDialog() {
@@ -266,4 +270,5 @@ public class CandidateManagerScreen extends JFrame {
 				candidate.getCid(), candidate.getName(), candidate.getBranch(), candidate.getSex(),
 				candidate.getPhone(), candidate.getSpeciality(), candidate.getXpYears()));
 	}
+	
 }

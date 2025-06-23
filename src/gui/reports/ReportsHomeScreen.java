@@ -1,12 +1,13 @@
 package gui.reports;
 
+import gui.components.MTable;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
-
 import javax.swing.UIManager;
 
 import java.awt.Font;
@@ -39,7 +40,7 @@ public class ReportsHomeScreen extends JFrame {
 	private JPanel contentPane;
 	private DefaultTableModel tableModel;
 
-	private JTable table;
+	private MTable table;
 	private JTextField btnSearch;
 
 	/**
@@ -86,9 +87,8 @@ public class ReportsHomeScreen extends JFrame {
 			}
 		}
 
-		table = new JTable();
-		table.setModel(mejoresOfertasModel);
-		table.setEnabled(false);
+		table = new MTable(mejoresOfertasModel);
+		
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 76, 589, 347);

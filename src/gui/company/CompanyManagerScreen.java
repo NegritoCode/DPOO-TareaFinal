@@ -23,7 +23,7 @@ public class CompanyManagerScreen extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private Agency agency;
-	private JTable companyTable;
+	private MTable companyTable;
 	private DefaultTableModel tableModel;
 	private JPanel companyDetailsPanel;
 	private JTextField searchField;
