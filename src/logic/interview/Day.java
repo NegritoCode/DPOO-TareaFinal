@@ -17,9 +17,11 @@ public class Day {
     /**
      * Añade una entrevista si no existe el mismo candidato
      */
-    public void createInterview(String candidateCid, String companyId, String offerId) {
+    public Interview createInterview(String candidateCid, String companyId, String offerId) {
         if (getInterview(candidateCid) == null) {
-            interviews.add(new Interview(monthId, id, candidateCid, companyId, offerId));
+        	Interview interview = new Interview(monthId, id, candidateCid, companyId, offerId);
+            interviews.add(interview);
+            return interview;
         } else {
             throw new IllegalStateException("Ya existe una entrevista asignada en este día para " + candidateCid);
         }

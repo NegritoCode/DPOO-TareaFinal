@@ -39,16 +39,13 @@ public class MonthRegister {
      * 
      * @throws IllegalStateException si ningún día puede aceptar la cita
      */
-    public void createInterview(String candidateId, String companyId, String offerId) {
-        boolean created = false;
+    public Interview createInterview(String candidateId, String companyId, String offerId) {
+        Interview interview = null;
         int i = 0;
 
-        while (!created && i < days.size()) {
+        while (interview == null && i < days.size()) {
             try {
-                days.get(i).createInterview(candidateId, companyId, offerId);
-
-                // se creó sin errores
-                created = true;
+                interview = days.get(i).createInterview(candidateId, companyId, offerId);
             } catch (IllegalStateException e) {
                 // ups! No fue posible crear la entrevista en este dia
                 // intentar con el siguiente
@@ -56,13 +53,14 @@ public class MonthRegister {
             }
         }
 
-        if (!created) {
+        if (interview == null) {
             // ningún día está disponible
             // iniciar uno nuevo en el registro y colocarlo allí
             Day newDay = createDay();
-            newDay.createInterview(candidateId, companyId, offerId);
+            return newDay.createInterview(candidateId, companyId, offerId);
         }
-
+        
+        return interview;
     }
 
     // Getters y setters
