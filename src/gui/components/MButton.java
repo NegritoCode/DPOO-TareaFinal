@@ -9,9 +9,6 @@ public class MButton extends JButton {
 
 	public MButton(String text, String type, ActionListener actionListener) {
 		super(text);
-		setBackground(new Color(33, 150, 243));
-		setForeground(Color.WHITE);
-
 		if (type.equals("small")) {
 			setFont(new Font("Roboto", Font.BOLD, 12));
 		} else if (type.equals("normal")) {
@@ -22,6 +19,10 @@ public class MButton extends JButton {
 		
 		setBorderPainted(false);
 		setFocusPainted(false);
+		setBackground(new Color(33, 150, 243));
+		setForeground(Color.WHITE);
+		setCursor(new Cursor(Cursor.HAND_CURSOR));
+		
 		if (actionListener != null) {
 			addActionListener(actionListener);
 		}
