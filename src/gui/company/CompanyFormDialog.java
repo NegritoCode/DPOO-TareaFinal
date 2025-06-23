@@ -10,7 +10,8 @@ import logic.GlobalAgency;
 import logic.company.Company;
 
 public class CompanyFormDialog extends JDialog {
-    private JTextField nameField, addressField, phoneField, sectorField;
+	private static final long serialVersionUID = 1L;
+	private JTextField nameField, addressField, phoneField, sectorField;
     private Agency agency;
     private Company company;
 

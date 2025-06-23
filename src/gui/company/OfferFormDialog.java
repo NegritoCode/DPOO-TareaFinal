@@ -1,4 +1,4 @@
-package gui.offer;
+package gui.company;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,16 +8,26 @@ import javax.swing.border.EmptyBorder;
 import logic.Agency;
 import logic.GlobalAgency;
 import logic.company.Company;
+import logic.company.Offer;
 import utils.constants.Branch;
 
 public class OfferFormDialog extends JDialog {
-    private JTextField salaryField;
+	private static final long serialVersionUID = 1L;
+	private JTextField salaryField;
     private JComboBox<String> companyComboBox, branchComboBox;
     private Agency agency;
+    private Company company;
+    private Offer offer;
 
-    public OfferFormDialog(JFrame parent) {
+    public OfferFormDialog(JFrame parent, Company company) {
+        this(parent, company, null);
+    }
+
+    public OfferFormDialog(JFrame parent, Company company, Offer offer) {
         super(parent, "Formulario de Oferta", true);
         this.agency = GlobalAgency.getInstance();
+        this.company = company;
+        this.offer = offer;
 
         setSize(400, 350);
         setLocationRelativeTo(parent);
@@ -37,8 +47,8 @@ public class OfferFormDialog extends JDialog {
 
         contentPanel.add(new JLabel("Empresa:"), gbc);
         companyComboBox = new JComboBox<>();
-        for (Company company : agency.getCompanyManager().getCompanies()) {
-            companyComboBox.addItem(company.getName());
+        for (Company currentCompany : agency.getCompanyManager().getCompanies()) {
+            companyComboBox.addItem(currentCompany.getName());
         }
         gbc.gridx = 1;
         contentPanel.add(companyComboBox, gbc);
@@ -79,16 +89,24 @@ public class OfferFormDialog extends JDialog {
                 dispose();
             }
         });
+
+        if (offer != null) {
+            branchComboBox.setSelectedItem(offer.getBranch());
+            salaryField.setText(String.valueOf(offer.getSalary()));
+        }
     }
 
     private void saveOffer() {
         try {
             String branch = (String) branchComboBox.getSelectedItem();
             double salary = Double.parseDouble(salaryField.getText());
-            String selectedCompanyName = (String) companyComboBox.getSelectedItem();
 
-            Company selectedCompany = agency.getCompanyManager().getCompanyByName(selectedCompanyName);
-            selectedCompany.createOffer(branch, salary);
+            if (offer == null) {
+                company.createOffer(branch, salary);
+            } else {
+                offer.setBranch(branch);
+                offer.setSalary(salary);
+            }
             dispose();
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "El salario debe ser un número válido.");

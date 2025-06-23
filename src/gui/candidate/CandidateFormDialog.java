@@ -16,11 +16,12 @@ import utils.constants.Specialty;
 public class CandidateFormDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	
-	private JTextField cidField, nameField, phoneField, xpYearsField, addressField, schoolLevelField;
+	private JTextField cidField, nameField, phoneField, addressField, schoolLevelField;
     private JComboBox<Character> sexComboBox;
     private JComboBox<String> branchComboBox, specialityComboBox;
     private Agency agency;
     private Candidate candidate;
+    private JSpinner xpYearsField;
     private JTextField physicalEfficiencyField, medicalRecordField, languageCertificateField;
     private JPanel extraFieldsPanel;
 
@@ -72,7 +73,7 @@ public class CandidateFormDialog extends JDialog {
         gbc.gridx = 0;
         gbc.gridy++;
         contentPanel.add(new JLabel("Años de Experiencia:"), gbc);
-        xpYearsField = new JTextField();
+        xpYearsField = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1)); // Componente nativo JSpinner
         gbc.gridx = 1;
         contentPanel.add(xpYearsField, gbc);
 
@@ -156,7 +157,7 @@ public class CandidateFormDialog extends JDialog {
         nameField.setText(candidate.getName());
         sexComboBox.setSelectedItem(candidate.getSex());
         phoneField.setText(candidate.getPhone());
-        xpYearsField.setText(String.valueOf(candidate.getXpYears()));
+        xpYearsField.setValue(candidate.getXpYears()); // Actualizar el valor del JSpinner
         branchComboBox.setSelectedItem(candidate.getBranch());
         addressField.setText(candidate.getAddress());
         specialityComboBox.setSelectedItem(candidate.getSpeciality());
@@ -198,7 +199,7 @@ public class CandidateFormDialog extends JDialog {
             String name = nameField.getText();
             char sex = (char) sexComboBox.getSelectedItem();
             String phone = phoneField.getText();
-            int xpYears = Integer.parseInt(xpYearsField.getText());
+            int xpYears = (int) xpYearsField.getValue(); // Obtener el valor del JSpinner
             String branch = (String) branchComboBox.getSelectedItem();
             String speciality = (String) specialityComboBox.getSelectedItem();
             String address = addressField.getText();

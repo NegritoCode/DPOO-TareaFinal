@@ -163,9 +163,9 @@ public class CandidateManagerScreen extends JFrame {
 
 	private void showBranchFilterDialog() {
 		JDialog dialog = new JDialog(this, "Seleccionar Ramo", true);
-		dialog.setSize(300, 400);
-		dialog.setLocationRelativeTo(this);
-		dialog.getContentPane().setLayout(new BorderLayout());
+		setSize(300, 400);
+		setLocationRelativeTo(this);
+		getContentPane().setLayout(new BorderLayout());
 
 		JPanel checkboxPanel = new JPanel();
 		checkboxPanel.setLayout(new BoxLayout(checkboxPanel, BoxLayout.Y_AXIS));
@@ -231,14 +231,14 @@ public class CandidateManagerScreen extends JFrame {
 					}
 				}
 				loadCandidates();
-				dialog.dispose();
+				dispose();
 			}
 		});
 
-		dialog.getContentPane().add(new JScrollPane(checkboxPanel), BorderLayout.CENTER);
-		dialog.getContentPane().add(buttonPanel, BorderLayout.NORTH);
-		dialog.getContentPane().add(applyButton, BorderLayout.SOUTH);
-		dialog.setVisible(true);
+		getContentPane().add(new JScrollPane(checkboxPanel), BorderLayout.CENTER);
+		getContentPane().add(buttonPanel, BorderLayout.NORTH);
+		getContentPane().add(applyButton, BorderLayout.SOUTH);
+		setVisible(true);
 	}
 
 	private void loadCandidates() {

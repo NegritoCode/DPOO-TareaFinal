@@ -4,11 +4,14 @@ import utils.Navigation;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import gui.components.BigButton;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class HomeScreen extends JFrame {
-
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
 	public HomeScreen() {
@@ -34,7 +37,7 @@ public class HomeScreen extends JFrame {
 		buttonPanel.setBackground(Color.WHITE);
 		contentPane.add(buttonPanel);
 
-		JButton btnCandidatos = createModernButton("Candidatos", new ActionListener() {
+		JButton btnCandidatos = new BigButton("Candidatos", new ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent e) {
 				Navigation.goTo("CandidateManager");
@@ -42,7 +45,7 @@ public class HomeScreen extends JFrame {
 		});
 		buttonPanel.add(btnCandidatos);
 
-		JButton btnEmpresas = createModernButton("Empresas", new ActionListener() {
+		JButton btnEmpresas = new BigButton("Empresas", new ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent e) {
 				Navigation.goTo("CompanyManager");
@@ -50,7 +53,7 @@ public class HomeScreen extends JFrame {
 		});
 		buttonPanel.add(btnEmpresas);
 
-		JButton btnOfertas = createModernButton("Ofertas", new ActionListener() {
+		JButton btnOfertas = new BigButton("Ofertas", new ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent e) {
 				Navigation.goTo("OfferManager");
@@ -58,7 +61,7 @@ public class HomeScreen extends JFrame {
 		});
 		buttonPanel.add(btnOfertas);
 
-		JButton btnReportes = createModernButton("Reportes", new ActionListener() {
+		JButton btnReportes = new BigButton("Reportes", new ActionListener() {
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent e) {
 				Navigation.goTo("ReportsHome");
@@ -72,17 +75,5 @@ public class HomeScreen extends JFrame {
 		footerLabel.setForeground(new Color(150, 150, 150));
 		footerLabel.setBounds(180, 317, 200, 20);
 		contentPane.add(footerLabel);
-	}
-
-	private JButton createModernButton(String text, ActionListener action) {
-		JButton button = new JButton(text);
-		button.setFont(new Font("Arial", Font.BOLD, 14));
-		button.setBackground(new Color(33, 150, 243));
-		button.setForeground(Color.WHITE);
-		button.setFocusPainted(false);
-		button.setBorder(BorderFactory.createEmptyBorder());
-		button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		button.addActionListener(action);
-		return button;
 	}
 }
