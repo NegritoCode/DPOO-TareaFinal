@@ -175,7 +175,7 @@ public class Agency {
 	public ArrayList<Candidate> getBestCandidates(){		// se tiene en cuenta el nivel de escolaridad y los años de experiencia
 		ArrayList<Candidate> bCandidates = new ArrayList<Candidate>();
 			for (Candidate c :candidates)
-				if (c.getSchoolLevel().equals("Universidad") && c.getXpYears() >= 10)
+				if (c.getSchoolLevel().equalsIgnoreCase("Universidad") && c.getXpYears() >= 10)
 					bCandidates.add(c);
 		
 		

@@ -94,6 +94,12 @@ public class ReportsHomeScreen extends JFrame {
 			mayoresEmpleadoresModel
 				.addRow(new Object[] {c.getId(),c.getName(),c.getAddress(),c.getPhone(),c.getSector()});
 		}
+		final DefaultTableModel candidatosDestacadosModel = new DefaultTableModel(new Object[][] { { null, null, null,null,null,null,null,null,null }, },
+				new String[] { "Cid","Rama","Nombre", "Sexo", "Direccion","Telefono","Escolaridad","Especialidad","Experiencia" });
+		for (Candidate c: GlobalAgency.getInstance().getBestCandidates()){
+			candidatosDestacadosModel.addRow(new Object[]{c.getCid(),c.getBranch(),c.getName(),c.getSex(),c.getAddress(),c.getPhone(),c.getSchoolLevel(),c.getSpeciality(),c.getXpYears()});
+		}
+			
 			
 
 		table = new MTable(mejoresOfertasModel);
@@ -199,7 +205,13 @@ public class ReportsHomeScreen extends JFrame {
 		btnReport3.setBounds(10, 237, 248, 43);
 		panel.add(btnReport3);
 
-		JButton btnReport4 = new JButton("Reporte 4");
+		final JButton btnReport4 = new JButton("Candidatos Destacados");
+		btnReport4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				titleTab.setText(btnReport4.getText());
+				table.setModel(candidatosDestacadosModel);
+			}
+		});
 		btnReport4.setForeground(Color.WHITE);
 		btnReport4.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnReport4.setContentAreaFilled(false);
