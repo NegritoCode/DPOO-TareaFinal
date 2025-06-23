@@ -78,4 +78,7 @@ public class Company {
     public ArrayList<Offer> getOffers() {
         return offers;
     }
+    public int getNoOffers(){
+    	return offers.size();
+    }
 }

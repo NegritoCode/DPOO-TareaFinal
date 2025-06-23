@@ -156,4 +156,28 @@ public class Agency {
 
 		month.createInterview(candidateId, companyId, offerId);
 	}
+	public ArrayList<Company> getCompaniesMostOffers(){
+		ArrayList<Company> companies = new ArrayList<Company>();
+		int temp = -1;
+		
+		for (Company c : companyManager.getCompanies())
+			if (c.getNoOffers() > temp){
+				companies.clear();
+				temp = c.getNoOffers();
+			}
+			else if (c.getNoOffers() > temp)
+				companies.add(c);
+		
+		
+		return companies;
+	}
+	public ArrayList<Candidate> getBestCandidates(){		// se tiene en cuenta el nivel de escolaridad y los años de experiencia
+		ArrayList<Candidate> bCandidates = new ArrayList<Candidate>();
+			for (Candidate c :candidates)
+				if (c.getSchoolLevel().equals("Universidad") && c.getXpYears() >= 10)
+					bCandidates.add(c);
+		
+		
+		return bCandidates;
+	}
 }
