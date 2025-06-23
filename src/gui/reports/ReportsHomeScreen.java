@@ -86,8 +86,18 @@ public class ReportsHomeScreen extends JFrame {
 								interview.getMonthlyId(), interview.getDayId(), interview.getOfferId(), });
 			}
 		}
+		final DefaultTableModel mayoresEmpleadoresModel = new DefaultTableModel(new Object[][] { { null, null, null,null,null }, },
+				new String[] { "ID","Nombre","Direccion", "Telefono", "Sector" });
+		
+		for (Company c: GlobalAgency.getInstance().getCompaniesMostOffers()){
+			
+			mayoresEmpleadoresModel
+				.addRow(new Object[] {c.getId(),c.getName(),c.getAddress(),c.getPhone(),c.getSector()});
+		}
+			
 
 		table = new MTable(mejoresOfertasModel);
+		
 		
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -175,9 +185,11 @@ public class ReportsHomeScreen extends JFrame {
 		btnEntrevistasPorDia.setBounds(10, 163, 248, 43);
 		panel.add(btnEntrevistasPorDia);
 
-		JButton btnReport3 = new JButton("Reporte 3");
+		final JButton btnReport3 = new JButton("Mayores Empleadores");
 		btnReport3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				titleTab.setText(btnReport3.getText());
+				table.setModel(mayoresEmpleadoresModel);
 			}
 		});
 		btnReport3.setForeground(Color.WHITE);

@@ -164,6 +164,7 @@ public class Agency {
 			if (c.getNoOffers() > temp){
 				companies.clear();
 				temp = c.getNoOffers();
+				companies.add(c);
 			}
 			else if (c.getNoOffers() > temp)
 				companies.add(c);
