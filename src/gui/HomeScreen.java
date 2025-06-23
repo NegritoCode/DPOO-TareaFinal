@@ -5,9 +5,10 @@ import utils.Navigation;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import gui.components.BigButton;
+import gui.components.MButton;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class HomeScreen extends JFrame {
@@ -37,37 +38,37 @@ public class HomeScreen extends JFrame {
 		buttonPanel.setBackground(Color.WHITE);
 		contentPane.add(buttonPanel);
 
-		JButton btnCandidatos = new BigButton("Candidatos", new ActionListener() {
+		JButton btnCandidatos = new MButton("Candidatos", new ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				Navigation.goTo("CandidateManager");
 			}
 		});
 		buttonPanel.add(btnCandidatos);
 
-		JButton btnEmpresas = new BigButton("Empresas", new ActionListener() {
+		JButton btnEmpresas = new MButton("Empresas", new ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				Navigation.goTo("CompanyManager");
 			}
 		});
 		buttonPanel.add(btnEmpresas);
 
-		JButton btnOfertas = new BigButton("Ofertas", new ActionListener() {
+		JButton btnReportes = new MButton("Reportes", new ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
-				Navigation.goTo("OfferManager");
-			}
-		});
-		buttonPanel.add(btnOfertas);
-
-		JButton btnReportes = new BigButton("Reportes", new ActionListener() {
-			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(ActionEvent e) {
 				Navigation.goTo("ReportsHome");
 			}
 		});
 		buttonPanel.add(btnReportes);
+		
+		JButton btnAbout = new MButton("Acerca de", new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Navigation.goTo("ReportsHome");
+			}
+		});
+		buttonPanel.add(btnAbout);
 
 		JLabel footerLabel = new JLabel("© 2025 Agencia Empleadora");
 		footerLabel.setHorizontalAlignment(SwingConstants.CENTER);

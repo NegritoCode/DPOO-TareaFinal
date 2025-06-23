@@ -16,7 +16,7 @@ import logic.company.Company;
 import logic.company.Offer;
 import utils.Navigation;
 import utils.constants.Sector;
-import gui.components.Button;
+import gui.components.MButton;
 import gui.components.MTable;
 
 public class CompanyManagerScreen extends JFrame {
@@ -43,7 +43,7 @@ public class CompanyManagerScreen extends JFrame {
 		JPanel topPanel = new JPanel(new BorderLayout());
 		topPanel.setBackground(new Color(245, 245, 245));
 		topPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(224, 224, 224)));
-		JButton backButton = new Button("Atrás", new ActionListener() {
+		JButton backButton = new MButton("Atrás", new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Navigation.goTo("Home");
@@ -54,7 +54,7 @@ public class CompanyManagerScreen extends JFrame {
 		searchField.setFont(new Font("Roboto", Font.PLAIN, 14));
 		searchField.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createLineBorder(new Color(224, 224, 224)), BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-		JButton searchButton = new Button("Buscar", new ActionListener() {
+		JButton searchButton = new MButton("Buscar", new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String query = searchField.getText().trim();
@@ -71,7 +71,7 @@ public class CompanyManagerScreen extends JFrame {
 
 		selectedSectors = new ArrayList<>(Arrays.asList(Sector.SECTORS));
 
-		JButton filterButton = new Button("Filtrar por Sector", new ActionListener() {
+		JButton filterButton = new MButton("Filtrar por Sector", new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				showCompanyFilterDialog();
@@ -132,7 +132,7 @@ public class CompanyManagerScreen extends JFrame {
 		offerPanel.add(offerScrollPane, BorderLayout.CENTER);
 
 		JPanel offerButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		JButton addOfferButton = new Button("Agregar Oferta", new ActionListener() {
+		JButton addOfferButton = new MButton("Agregar Oferta", "small", new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = companyTable.getSelectedRow();
@@ -147,7 +147,7 @@ public class CompanyManagerScreen extends JFrame {
 				}
 			}
 		});
-		JButton editOfferButton = new Button("Editar Oferta", new ActionListener() {
+		JButton editOfferButton = new MButton("Editar Oferta", "small", new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = offerTable.getSelectedRow();
@@ -162,7 +162,7 @@ public class CompanyManagerScreen extends JFrame {
 				}
 			}
 		});
-		JButton deleteOfferButton = new Button("Eliminar Oferta", new ActionListener() {
+		JButton deleteOfferButton = new MButton("Eliminar Oferta", "small", new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = offerTable.getSelectedRow();
@@ -186,7 +186,7 @@ public class CompanyManagerScreen extends JFrame {
 		JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		bottomPanel.setBackground(new Color(245, 245, 245));
 		bottomPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(224, 224, 224)));
-		JButton addButton = new Button("+", new ActionListener() {
+		JButton addButton = new MButton("+", new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new CompanyFormDialog(CompanyManagerScreen.this, null).setVisible(true);
