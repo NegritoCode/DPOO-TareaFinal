@@ -71,7 +71,7 @@ public class ReportsHomeScreen extends JFrame {
 				});
 
 		// obtener lista de nombres de candidatos para el filtro
-		ArrayList<Candidate> candidates = agency.getCandidates();
+		final ArrayList<Candidate> candidates = agency.getCandidates();
 		String[] names = new String[candidates.size()];
 		for (int i = 0; i < candidates.size(); i++) {
 			names[i] = candidates.get(i).getName();

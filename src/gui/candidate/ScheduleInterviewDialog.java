@@ -18,15 +18,15 @@ import java.util.ArrayList;
 public class ScheduleInterviewDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 
-	public ScheduleInterviewDialog(JFrame parent, Candidate candidate, Agency agency) {
+	public ScheduleInterviewDialog(final JFrame parent, final Candidate candidate, final Agency agency) {
 		super(parent, "Agendar Entrevista", true);
 		setSize(600, 400);
 		setLocationRelativeTo(parent);
 
 		String[] columnNames = { "Empresa", "Rama", "Salario" };
-		DefaultTableModel offersTableModel = new DefaultTableModel(columnNames, 0);
-		JTable offersTable = new MTable(offersTableModel);
-        ArrayList<Offer> offers = agency.getOffersByBranch(candidate.getBranch());
+		final DefaultTableModel offersTableModel = new DefaultTableModel(columnNames, 0);
+		final JTable offersTable = new MTable(offersTableModel);
+        final ArrayList<Offer> offers = agency.getOffersByBranch(candidate.getBranch());
 		for (Offer offer : offers) {
 			Company company = agency.getCompanyManager().getCompanyById(offer.getCompanyId());
 			offersTableModel.addRow(new Object[] { company.getName(), offer.getBranch(), offer.getSalary() });

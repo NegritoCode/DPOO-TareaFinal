@@ -124,7 +124,12 @@ public class Agency {
 
 	public Candidate createCandidate(String cid, String branch, String name, char sex, String address, String phone,
 			String schoolLevel, String speciality, int xpYears) {
-
+		boolean exist = false;
+		int i = 0;
+		
+		if(candidates.containsKey(cid))
+			throw new IllegalArgumentException("Ya esta registrado ese CI");
+		else{
 		Candidate candidate;
 		if (branch.equals("custodio")) {
 			candidate = new SegurityCandidate(cid, branch, name, sex, address, phone, schoolLevel, speciality, xpYears,
@@ -137,8 +142,12 @@ public class Agency {
 		}
 
 		candidates.put(cid, candidate); // Agregar candidato al HashMap
-
+		
 		return candidate;
+		}
+		
+
+		
 	}
 
 	public void createInterview(String candidateId, String companyId, String offerId) {

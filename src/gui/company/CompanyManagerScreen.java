@@ -155,7 +155,7 @@ public class CompanyManagerScreen extends JFrame {
 				}
 			}
 		});
-		JButton deleteOfferButton = new MButton("Eliminar Oferta", "small", new ActionListener() {
+		final JButton deleteOfferButton = new MButton("Eliminar Oferta", "small", new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (currentOffer != null) {
