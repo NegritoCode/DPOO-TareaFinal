@@ -1,6 +1,8 @@
 package logic.candidate;
 
+import java.util.ArrayList;
 import logic.company.Offer;
+import logic.interview.Interview;
 
 public class Candidate {
     private String cid;
@@ -12,7 +14,7 @@ public class Candidate {
     private String schoolLevel;
     private String speciality;
     private int xpYears;
-
+    private ArrayList<Interview> interviews;
     public Candidate(String cid, String branch, String name, char sex, String address, String phone, String schoolLevel,
             String speciality, int xpYears) {
         setCid(cid);
@@ -24,6 +26,7 @@ public class Candidate {
         setSchoolLevel(schoolLevel);
         setSpeciality(speciality);
         setXpYears(xpYears);
+        interviews = new ArrayList<>(); 
     }
 
     public boolean isElegibleFor(Offer offer) {
@@ -67,6 +70,10 @@ public class Candidate {
 
     public int getXpYears() {
         return xpYears;
+    }
+
+    public ArrayList<Interview> getInterviews() {
+        return interviews;
     }
 
     // Setters
@@ -134,5 +141,9 @@ public class Candidate {
             throw new IllegalArgumentException("Los años de experiencia no pueden ser negativos.");
         }
         this.xpYears = xpYears;
+    }
+
+    public void addInterview(Interview interview) {
+        interviews.add(interview);
     }
 }

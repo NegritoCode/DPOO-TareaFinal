@@ -1,6 +1,8 @@
 package logic.company;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import utils.Id;
 
 public class Company {
@@ -9,7 +11,7 @@ public class Company {
     private String address;
     private String phone;
     private String sector;
-    private ArrayList<Offer> offers;
+    private HashMap<String, Offer> offers;
 
     public Company(String name, String phone, String address, String sector) {
         this.id = Id.generateId("COMPANY");
@@ -17,16 +19,28 @@ public class Company {
         setAddress(address);
         setPhone(phone);
         setSector(sector);
-        this.offers = new ArrayList<Offer>();
+        this.offers = new HashMap<>();
     }
 
     public Offer createOffer(String branch, double salary) {
         Offer offer = new Offer(this.id, branch, salary);
-        offers.add(offer);
+        offers.put(offer.getId(), offer);
         return offer;
     }
 
-    // Getters and setters
+    public Offer getOfferById(String offerId) {
+        return offers.get(offerId);
+    }
+
+    public ArrayList<Offer> getOffers() {
+        return new ArrayList<>(offers.values());
+    }
+
+    public int getNoOffers() {
+        return offers.size(); 
+    }
+
+    // Getters y setters
     public String getId() {
         return id;
     }
@@ -73,12 +87,5 @@ public class Company {
             throw new IllegalArgumentException("El sector no puede estar vacío.");
         }
         this.sector = sector;
-    }
-
-    public ArrayList<Offer> getOffers() {
-        return offers;
-    }
-    public int getNoOffers(){
-    	return offers.size();
     }
 }
