@@ -20,7 +20,7 @@ import java.awt.GridLayout;
 public class CompanyFilterDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 
-	public CompanyFilterDialog(CompanyManagerScreen screen, ArrayList<String> selectedSectors) {
+	public CompanyFilterDialog(final CompanyManagerScreen screen, final ArrayList<String> selectedSectors) {
 		super(screen, "Seleccionar Sector", true);
 		setSize(300, 400);
 		setLocationRelativeTo(this);
@@ -28,7 +28,7 @@ public class CompanyFilterDialog extends JDialog {
 
 		JPanel checkboxPanel = new JPanel();
 		checkboxPanel.setLayout(new BoxLayout(checkboxPanel, BoxLayout.Y_AXIS));
-		JCheckBox[] checkboxes = new JCheckBox[Sector.SECTORS.length];
+		final JCheckBox[] checkboxes = new JCheckBox[Sector.SECTORS.length];
 		for (int i = 0; i < Sector.SECTORS.length; i++) {
 			checkboxes[i] = new JCheckBox(Sector.SECTORS[i]);
 			checkboxes[i].setSelected(selectedSectors.contains(Sector.SECTORS[i]));

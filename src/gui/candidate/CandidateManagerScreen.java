@@ -169,7 +169,7 @@ public class CandidateManagerScreen extends JFrame {
 
 		JPanel checkboxPanel = new JPanel();
 		checkboxPanel.setLayout(new BoxLayout(checkboxPanel, BoxLayout.Y_AXIS));
-		JCheckBox[] checkboxes = new JCheckBox[Branch.BRANCHES.length];
+		final JCheckBox[] checkboxes = new JCheckBox[Branch.BRANCHES.length];
 		for (int i = 0; i < Branch.BRANCHES.length; i++) {
 			checkboxes[i] = new JCheckBox(Branch.BRANCHES[i]);
 			checkboxes[i].setSelected(selectedBranches.contains(Branch.BRANCHES[i]));
