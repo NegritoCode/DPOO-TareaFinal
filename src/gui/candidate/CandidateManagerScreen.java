@@ -57,6 +57,10 @@ public class CandidateManagerScreen extends JFrame {
 				Navigation.goTo("Home");
 			}
 		});
+		backButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 
 		searchField = new SearchField(new ActionListener() {
 			@Override

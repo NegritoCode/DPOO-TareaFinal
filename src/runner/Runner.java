@@ -2,6 +2,7 @@ package runner;
 
 import gui.HomeScreen;
 import gui.Login;
+import gui.about.AboutScreen;
 import gui.candidate.CandidateManagerScreen;
 import gui.company.CompanyManagerScreen;
 import gui.reports.ReportsHomeScreen;
@@ -20,6 +21,7 @@ public class Runner {
 					Navigation.register("CandidateManager", new CandidateManagerScreen());
 					Navigation.register("CompanyManager", new CompanyManagerScreen());
 					Navigation.register("ReportsHome", new ReportsHomeScreen());
+					Navigation.register("AboutScreen", new AboutScreen());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

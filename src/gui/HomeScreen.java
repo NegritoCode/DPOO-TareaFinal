@@ -65,9 +65,10 @@ public class HomeScreen extends JFrame {
 		JButton btnAbout = new MButton("Acerca de", new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Navigation.goTo("ReportsHome");
+				Navigation.goTo("AboutScreen");
 			}
 		});
+	
 		buttonPanel.add(btnAbout);
 
 		JLabel footerLabel = new JLabel("© 2025 Agencia Empleadora");

@@ -124,8 +124,7 @@ public class Agency {
 
 	public Candidate createCandidate(String cid, String branch, String name, char sex, String address, String phone,
 			String schoolLevel, String speciality, int xpYears) {
-		boolean exist = false;
-		int i = 0;
+		
 		
 		if(candidates.containsKey(cid))
 			throw new IllegalArgumentException("Ya esta registrado ese CI");
