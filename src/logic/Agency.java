@@ -179,7 +179,7 @@ public class Agency {
 				companies.clear();
 				temp = c.getNoOffers();
 				companies.add(c);
-			} else if (c.getNoOffers() > temp)
+			} else if (c.getNoOffers() == temp)
 				companies.add(c);
 
 		return companies;
