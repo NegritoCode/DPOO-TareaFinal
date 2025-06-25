@@ -29,6 +29,7 @@ public class Company {
     }
 
     public Offer getOfferById(String offerId) {
+    	if (!offers.containsKey(offerId)) throw new IllegalArgumentException("La Oferta " + offerId + " no se encontró.");
         return offers.get(offerId);
     }
 
