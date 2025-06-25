@@ -20,6 +20,7 @@ public class Login extends JFrame {
 	public Login() {
 		setTitle("Iniciar Sesión");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
 		setBounds(100, 100, 402, 386);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);

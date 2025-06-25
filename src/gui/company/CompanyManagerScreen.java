@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -37,10 +39,16 @@ public class CompanyManagerScreen extends JFrame {
 	private Offer currentOffer;
 
 	public CompanyManagerScreen() {
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				Navigation.goTo("Home");
+			}
+		});
 		this.agency = GlobalAgency.getInstance();
 		setTitle("Gestión de Empresas");
 		setSize(800, 600);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 
@@ -148,7 +156,7 @@ public class CompanyManagerScreen extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (currentOffer != null) {
-					new OfferFormDialog(CompanyManagerScreen.this, currentCompany, currentOffer).setVisible(true);
+					new OfferFormDialog(CompanyManagerScreen.this, currentCompany, currentOffer);
 					renderOffers();
 				} else {
 					JOptionPane.showMessageDialog(CompanyManagerScreen.this, "Seleccione una oferta para editar.");
@@ -203,9 +211,10 @@ public class CompanyManagerScreen extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				if (currentCompany != null) {
 					String index = (String) offerTableModel.getValueAt(offerTable.getSelectedRow(), 0);
-					currentOffer = currentCompany.getOffers().get(Integer.parseInt(index));
-
-					deleteOfferButton.setText(currentOffer.isAvailable() ? "Eliminar Oferta" : "Habilitar Oferta");
+					if (index != null) {
+						currentOffer = currentCompany.getOffers().get(Integer.parseInt(index));
+						deleteOfferButton.setText(currentOffer.isAvailable() ? "Eliminar Oferta" : "Habilitar Oferta");
+					}
 
 				}
 			}

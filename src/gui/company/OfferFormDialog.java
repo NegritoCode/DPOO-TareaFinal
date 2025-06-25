@@ -25,7 +25,7 @@ public class OfferFormDialog extends JDialog {
 
     public OfferFormDialog(JFrame parent, Company company, Offer offer) {
         super(parent, "Formulario de Oferta", true);
-        this.agency = GlobalAgency.getInstance();
+        setResizable(false);
         this.company = company;
         this.offer = offer;
 

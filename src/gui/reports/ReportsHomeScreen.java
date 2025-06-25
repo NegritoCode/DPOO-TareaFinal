@@ -1,27 +1,20 @@
 package gui.reports;
 
-import gui.components.FilterDialog;
-import gui.components.MButton;
-import gui.components.MTable;
-import gui.components.SearchField;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
-import javax.swing.UIManager;
 
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.JTable;
-import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
 import utils.Navigation;
@@ -29,19 +22,12 @@ import utils.constants.Branch;
 import utils.constants.Sector;
 import utils.constants.Specialty;
 
-import javax.swing.SwingConstants;
-
 import logic.Agency;
 import logic.GlobalAgency;
 import logic.candidate.Candidate;
 import logic.company.Company;
 import logic.company.Offer;
 import logic.interview.Interview;
-
-import javax.swing.JTextField;
-import javax.swing.ImageIcon;
-
-import gui.reports.ReportPanel;
 
 public class ReportsHomeScreen extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -170,8 +156,13 @@ public class ReportsHomeScreen extends JFrame {
 	 * Create the frame.
 	 */
 	public ReportsHomeScreen() {
-
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				Navigation.goTo("Home");
+			}
+		});
 		setBounds(100, 100, 935, 495);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

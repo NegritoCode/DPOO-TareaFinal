@@ -11,6 +11,8 @@ import javax.swing.table.DefaultTableModel;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
@@ -21,7 +23,6 @@ import logic.candidate.Candidate;
 import logic.interview.Interview;
 import utils.Navigation;
 import utils.constants.Branch;
-import javax.swing.table.TableModel;
 
 public class CandidateManagerScreen extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -35,10 +36,16 @@ public class CandidateManagerScreen extends JFrame {
 	private DefaultTableModel interviewTableModel;
 
 	public CandidateManagerScreen() {
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				Navigation.goTo("Home");
+			}
+		});
 		this.agency = GlobalAgency.getInstance();
 		setTitle("Gestión de Candidatos");
 		setSize(800, 600);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 
