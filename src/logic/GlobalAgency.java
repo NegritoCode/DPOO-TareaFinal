@@ -37,6 +37,14 @@ public class GlobalAgency {
                         candidate.getSchoolLevel(),
                         candidate.getSpeciality(),
                         candidate.getXpYears());
+                
+                for (Company c : instance.getCompanyManager().getCompanies()) {
+                	for (Offer o:c.getOffers()) {
+                		if (o.isElegibleTo(candidate)) {
+                			instance.createInterview(candidate.getCid(), c.getId(), o.getId());
+                		}
+                	}
+                }
             }
         }
         return instance;
