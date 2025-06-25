@@ -17,8 +17,25 @@ public class HomeScreen extends JFrame {
 
 	public HomeScreen() {
 		setTitle("Inicio");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 600, 400);
+		setResizable(false);
+		
+		addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowClosing(java.awt.event.WindowEvent e) {
+				int confirm = JOptionPane.showConfirmDialog(
+					HomeScreen.this,
+					"¿Seguro que desea salir?\nEste proyecto es una demo, los cambios no se guardarán.",
+					"Confirmación de salida",
+					JOptionPane.YES_NO_OPTION
+				);
+				if (confirm == JOptionPane.YES_OPTION) {
+					System.exit(0);
+				}
+			}
+		});
+		
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(20, 20, 20, 20));
