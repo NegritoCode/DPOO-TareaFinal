@@ -27,91 +27,68 @@ public class CandidateFormDialog extends JDialog {
 
     public CandidateFormDialog(JFrame parent, Candidate candidate) {
         super(parent, "Formulario de Candidato", true);
+        setResizable(false);
         this.agency = GlobalAgency.getInstance();
         this.candidate = candidate;
 
         setSize(500, 600);
         setLocationRelativeTo(parent);
-        setLayout(new BorderLayout(10, 10));
+        getContentPane().setLayout(new BorderLayout(10, 10));
 
-        JPanel contentPanel = new JPanel(new GridBagLayout());
+        JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
         contentPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        add(contentPanel, BorderLayout.CENTER);
+        getContentPane().add(contentPanel, BorderLayout.CENTER);
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
+        JPanel formPanel = new JPanel(new GridLayout(0, 2, 5, 5));
+        contentPanel.add(formPanel, BorderLayout.CENTER);
 
-        contentPanel.add(new JLabel("Carnet:"), gbc);
+        formPanel.add(new JLabel("Carnet:"));
         cidField = new JTextField();
-        gbc.gridx = 1;
-        contentPanel.add(cidField, gbc);
+        formPanel.add(cidField);
 
-        gbc.gridx = 0;
-        gbc.gridy++;
-        contentPanel.add(new JLabel("Nombre:"), gbc);
+        formPanel.add(new JLabel("Nombre:"));
         nameField = new JTextField();
-        gbc.gridx = 1;
-        contentPanel.add(nameField, gbc);
+        formPanel.add(nameField);
 
-        gbc.gridx = 0;
-        gbc.gridy++;
-        contentPanel.add(new JLabel("Sexo:"), gbc);
-        sexComboBox = new JComboBox<>(new Character[] { 'M', 'F' });
-        gbc.gridx = 1;
-        contentPanel.add(sexComboBox, gbc);
+        formPanel.add(new JLabel("Sexo:"));
+        sexComboBox = new JComboBox<>();
+        sexComboBox.addItem('M');
+        sexComboBox.addItem('F');
+        formPanel.add(sexComboBox);
 
-        gbc.gridx = 0;
-        gbc.gridy++;
-        contentPanel.add(new JLabel("Teléfono:"), gbc);
+        formPanel.add(new JLabel("Teléfono:"));
         phoneField = new JTextField();
-        gbc.gridx = 1;
-        contentPanel.add(phoneField, gbc);
+        formPanel.add(phoneField);
 
-        gbc.gridx = 0;
-        gbc.gridy++;
-        contentPanel.add(new JLabel("Años de Experiencia:"), gbc);
-        xpYearsField = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1)); // Componente nativo JSpinner
-        gbc.gridx = 1;
-        contentPanel.add(xpYearsField, gbc);
+        formPanel.add(new JLabel("Años de Experiencia:"));
+        xpYearsField = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
+        formPanel.add(xpYearsField);
 
-        gbc.gridx = 0;
-        gbc.gridy++;
-        contentPanel.add(new JLabel("Ramo:"), gbc);
-        branchComboBox = new JComboBox<>(Branch.BRANCHES);
-        gbc.gridx = 1;
-        contentPanel.add(branchComboBox, gbc);
+        formPanel.add(new JLabel("Ramo:"));
+        branchComboBox = new JComboBox<>();
+        for (String branch : Branch.BRANCHES) {
+        	branchComboBox.addItem(branch);
+        }
+        formPanel.add(branchComboBox);
 
-        gbc.gridx = 0;
-        gbc.gridy++;
-        contentPanel.add(new JLabel("Especialidad:"), gbc);
-        specialityComboBox = new JComboBox<>(Specialty.specialties);
-        gbc.gridx = 1;
-        contentPanel.add(specialityComboBox, gbc);
+        formPanel.add(new JLabel("Especialidad:"));
+        specialityComboBox = new JComboBox<>();
+        for (String branch : Specialty.specialties) {
+        	specialityComboBox.addItem(branch);
+        }
+        formPanel.add(specialityComboBox);
 
-        gbc.gridx = 0;
-        gbc.gridy++;
-        contentPanel.add(new JLabel("Dirección:"), gbc);
+        formPanel.add(new JLabel("Dirección:"));
         addressField = new JTextField();
-        gbc.gridx = 1;
-        contentPanel.add(addressField, gbc);
+        formPanel.add(addressField);
 
-        gbc.gridx = 0;
-        gbc.gridy++;
-        contentPanel.add(new JLabel("Nivel Escolar:"), gbc);
+        formPanel.add(new JLabel("Nivel Escolar:"));
         schoolLevelField = new JTextField();
-        gbc.gridx = 1;
-        contentPanel.add(schoolLevelField, gbc);
+        formPanel.add(schoolLevelField);
 
-        gbc.gridx = 0;
-        gbc.gridy++;
-        gbc.gridwidth = 2;
-        extraFieldsPanel = new JPanel(new GridLayout(0, 2));
-        contentPanel.add(extraFieldsPanel, gbc);
+        extraFieldsPanel = new JPanel(new GridLayout(0, 2, 5, 5));
+        contentPanel.add(extraFieldsPanel, BorderLayout.SOUTH);
 
-        // Campos adicionales
         physicalEfficiencyField = new JTextField();
         medicalRecordField = new JTextField();
         languageCertificateField = new JTextField();
@@ -123,7 +100,7 @@ public class CandidateFormDialog extends JDialog {
         JButton cancelButton = new JButton("Cancelar");
         buttonPanel.add(saveButton);
         buttonPanel.add(cancelButton);
-        add(buttonPanel, BorderLayout.SOUTH);
+        getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
         branchComboBox.addActionListener(new ActionListener() {
             @Override
@@ -166,27 +143,17 @@ public class CandidateFormDialog extends JDialog {
 
     private void updateExtraFields() {
         extraFieldsPanel.removeAll();
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
 
         String selectedBranch = (String) branchComboBox.getSelectedItem();
         if ("custodio".equalsIgnoreCase(selectedBranch)) {
-            extraFieldsPanel.add(new JLabel("Eficiencia Física:"), gbc);
-            gbc.gridx = 1;
-            extraFieldsPanel.add(physicalEfficiencyField, gbc);
+            extraFieldsPanel.add(new JLabel("Eficiencia Física:"));
+            extraFieldsPanel.add(physicalEfficiencyField);
 
-            gbc.gridx = 0;
-            gbc.gridy++;
-            extraFieldsPanel.add(new JLabel("Número de Registro Médico:"), gbc);
-            gbc.gridx = 1;
-            extraFieldsPanel.add(medicalRecordField, gbc);
+            extraFieldsPanel.add(new JLabel("Número de Registro Médico:"));
+            extraFieldsPanel.add(medicalRecordField);
         } else if ("turismo".equalsIgnoreCase(selectedBranch)) {
-            extraFieldsPanel.add(new JLabel("Certificado de Idiomas:"), gbc);
-            gbc.gridx = 1;
-            extraFieldsPanel.add(languageCertificateField, gbc);
+            extraFieldsPanel.add(new JLabel("Certificado de Idiomas:"));
+            extraFieldsPanel.add(languageCertificateField);
         }
 
         extraFieldsPanel.revalidate();
