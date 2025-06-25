@@ -1,7 +1,6 @@
 package logic.interview;
 
 import java.util.ArrayList;
-import utils.Id;
 
 public class MonthRegister {
     private String id;
@@ -28,7 +27,7 @@ public class MonthRegister {
             throw new IllegalStateException("Se llegó al límite de días");
         }
 
-        Day day = new Day(Id.generateId("DAY_" + (days.size() + 1)), id);
+        Day day = new Day(String.valueOf(days.size() + 1), id);
         days.add(day);
 
         return day;

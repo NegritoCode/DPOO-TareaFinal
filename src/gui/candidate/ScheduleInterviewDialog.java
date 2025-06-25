@@ -63,5 +63,7 @@ public class ScheduleInterviewDialog extends JDialog {
 		buttonPanel.add(cancelButton);
 
 		add(buttonPanel, BorderLayout.SOUTH);
+		
+		setVisible(true);
 	}
 }

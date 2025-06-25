@@ -154,6 +154,7 @@ public class CandidateManagerScreen extends JFrame {
 					String cid = (String) candidatesTableModel.getValueAt(selectedRow, 0);
 					Candidate candidate = agency.getCandidateByCid(cid);
 					showScheduleDialog(candidate);
+					renderInterviews(candidate);
 				} else {
 					JOptionPane.showMessageDialog(CandidateManagerScreen.this, "Seleccione un candidato para agendar.");
 				}
@@ -187,7 +188,7 @@ public class CandidateManagerScreen extends JFrame {
 				if (selectedRow != -1) {
 					String cid = (String) candidatesTableModel.getValueAt(selectedRow, 0);
 					Candidate candidate = agency.getCandidateByCid(cid);
-					displayCandidateDetails(candidate);
+					renderCandidateDetails(candidate);
 					renderInterviews(candidate);
 				}
 			}
@@ -214,15 +215,15 @@ public class CandidateManagerScreen extends JFrame {
 	private void renderInterviews(Candidate candidate) {
 		interviewTableModel.setRowCount(0);
 		if (candidate != null) {
-			for (Interview interview : candidate.getInterviews()) {
+			for (Interview interview : agency.getInterviewsByCandidate(candidate.getCid())) {
 				interviewTableModel.addRow(
 						new Object[] { agency.getCompanyManager().getCompanyById(interview.getCompanyId()).getName(),
-								interview.getOfferId(), interview.getMonthlyId() });
+								interview.getOfferId(), interview.getDayId() + " / " + interview.getMonthlyId() });
 			}
 		}
 	}
 
-	private void displayCandidateDetails(Candidate candidate) {
+	private void renderCandidateDetails(Candidate candidate) {
 		candidateDetails.setText(String.format(
 				"Carnet: %s\nNombre: %s\nRamo: %s\nSexo: %s\nTeléfono: %s\nEspecialidad: %s\nAños de Experiencia: %d",
 				candidate.getCid(), candidate.getName(), candidate.getBranch(), candidate.getSex(),
@@ -230,7 +231,7 @@ public class CandidateManagerScreen extends JFrame {
 	}
 
 	private void showScheduleDialog(Candidate candidate) {
-		new ScheduleInterviewDialog(this, candidate, agency).setVisible(true);
+		new ScheduleInterviewDialog(this, candidate, agency);
 	}
 
 }

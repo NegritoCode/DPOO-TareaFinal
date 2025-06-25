@@ -16,6 +16,7 @@ public class OfferFormDialog extends JDialog {
     private static final long serialVersionUID = 1L;
     private JSpinner salarySpinner;
     private JComboBox<String> branchComboBox;
+    private JCheckBox availableCheckBox; 
     private Company company;
     private Offer offer;
     
@@ -41,7 +42,11 @@ public class OfferFormDialog extends JDialog {
         if (offer != null) {
             branchComboBox.setSelectedItem(offer.getBranch());
             branchComboBox.setEnabled(false);
-            salarySpinner.setValue(offer.getSalary());  // Cambiado para usar JSpinner
+            salarySpinner.setValue(offer.getSalary());
+            availableCheckBox.setSelected(offer.isAvailable());
+        } else {
+            availableCheckBox.setSelected(true);
+            availableCheckBox.setEnabled(false);
         }
         
         setVisible(true);
@@ -58,7 +63,7 @@ public class OfferFormDialog extends JDialog {
         getContentPane().add(mainPanel, BorderLayout.CENTER);
         
 
-        JPanel formPanel = new JPanel(new GridLayout(2, 2, 5, 10));
+        JPanel formPanel = new JPanel(new GridLayout(3, 2, 5, 10));
         formPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         
         formPanel.add(new JLabel("Rama:"));
@@ -69,12 +74,13 @@ public class OfferFormDialog extends JDialog {
         formPanel.add(branchComboBox);
         
         formPanel.add(new JLabel("Salario:"));
+        
         // Configuración del JSpinner
         SpinnerNumberModel spinnerModel = new SpinnerNumberModel(
-            0.0,    // valor inicial
-            0.0,     // valor mínimo
-            Double.MAX_VALUE, // valor máximo
-            100.0    // incremento/decremento
+            8000.0,
+            0.0,
+            Double.MAX_VALUE,
+            100.0 
         );
         salarySpinner = new JSpinner(spinnerModel);
         
@@ -83,6 +89,10 @@ public class OfferFormDialog extends JDialog {
         salarySpinner.setEditor(editor);
         
         formPanel.add(salarySpinner);
+
+        formPanel.add(new JLabel("Disponible:"));
+        availableCheckBox = new JCheckBox();
+        formPanel.add(availableCheckBox);
         
         mainPanel.add(formPanel, BorderLayout.CENTER);
         
@@ -112,12 +122,14 @@ public class OfferFormDialog extends JDialog {
         try {
             String branch = (String) branchComboBox.getSelectedItem();
             double salary = ((Number) salarySpinner.getValue()).doubleValue(); 
+            boolean available = availableCheckBox.isSelected();
 
             if (offer == null) {
                 company.createOffer(branch, salary);
             } else {
                 offer.setBranch(branch);
                 offer.setSalary(salary);
+                offer.setAvailable(available);
             }
             dispose();
         } catch (Exception ex) {

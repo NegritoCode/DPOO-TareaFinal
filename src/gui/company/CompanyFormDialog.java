@@ -5,119 +5,103 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.border.EmptyBorder;
+
+import gui.components.MButton;
 import logic.Agency;
 import logic.GlobalAgency;
 import logic.company.Company;
+import utils.constants.Sector;
 
 public class CompanyFormDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
-	private JTextField nameField, addressField, phoneField, sectorField;
-    private Agency agency;
-    private Company company;
+	private JTextField nameField, addressField, phoneField;
+	private JComboBox<String> sectorComboBox;
+	private Agency agency;
+	private Company company;
 
-    public CompanyFormDialog(JFrame parent, Company company) {
-        super(parent, "Formulario de Empresa", true);
-        this.agency = GlobalAgency.getInstance();
-        this.company = company;
+	public CompanyFormDialog(JFrame parent, Company company) {
+		super(parent, "Formulario de Empresa", true);
+		setLocationRelativeTo(parent);
+		this.agency = GlobalAgency.getInstance();
+		this.company = company;
 
-        setSize(400, 300);
-        setLocationRelativeTo(parent);
-        setLayout(new BorderLayout(10, 10));
+		initUI();
 
-        JPanel contentPanel = new JPanel(new GridBagLayout());
-        contentPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        add(contentPanel, BorderLayout.CENTER);
+		if (company != null) {
+			nameField.setText(company.getName());
+			addressField.setText(company.getAddress());
+			phoneField.setText(company.getPhone());
+			sectorComboBox.setSelectedItem(company.getSector());
+		}
+	}
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
+	private void initUI() {
+		setSize(400, 243);
+		getContentPane().setLayout(new BorderLayout(10, 10));
 
-        Dimension textFieldSize = new Dimension(200, 25);
+		JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
+		contentPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		getContentPane().add(contentPanel, BorderLayout.CENTER);
 
-        contentPanel.add(new JLabel("Nombre:"), gbc);
-        nameField = new JTextField();
-        nameField.setPreferredSize(textFieldSize);
-        gbc.gridx = 1;
-        contentPanel.add(nameField, gbc);
+		JPanel formPanel = new JPanel(new GridLayout(4, 2, 5, 10));
+		contentPanel.add(formPanel, BorderLayout.CENTER);
 
-        gbc.gridx = 0;
-        gbc.gridy++;
-        contentPanel.add(new JLabel("Dirección:"), gbc);
-        addressField = new JTextField();
-        addressField.setPreferredSize(textFieldSize);
-        gbc.gridx = 1;
-        contentPanel.add(addressField, gbc);
+		formPanel.add(new JLabel("Nombre:"));
+		nameField = new JTextField();
+		formPanel.add(nameField);
 
-        gbc.gridx = 0;
-        gbc.gridy++;
-        contentPanel.add(new JLabel("Teléfono:"), gbc);
-        phoneField = new JTextField();
-        phoneField.setPreferredSize(textFieldSize);
-        gbc.gridx = 1;
-        contentPanel.add(phoneField, gbc);
+		formPanel.add(new JLabel("Dirección:"));
+		addressField = new JTextField();
+		formPanel.add(addressField);
 
-        gbc.gridx = 0;
-        gbc.gridy++;
-        contentPanel.add(new JLabel("Sector:"), gbc);
-        sectorField = new JTextField();
-        sectorField.setPreferredSize(textFieldSize);
-        gbc.gridx = 1;
-        contentPanel.add(sectorField, gbc);
+		formPanel.add(new JLabel("Teléfono:"));
+		phoneField = new JTextField();
+		formPanel.add(phoneField);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton saveButton = new JButton("Guardar");
-        JButton cancelButton = new JButton("Cancelar");
-        buttonPanel.add(saveButton);
-        buttonPanel.add(cancelButton);
-        add(buttonPanel, BorderLayout.SOUTH);
+		formPanel.add(new JLabel("Sector:"));
+		sectorComboBox = new JComboBox<>();
+		for (String sector : Sector.SECTORS) {
+			sectorComboBox.addItem(sector);
+		}
+		formPanel.add(sectorComboBox);
 
-        if (company != null) {
-            loadCompanyData();
-        }
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		JButton saveButton = new MButton("Guardar", new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				saveCompany();
+			}
+		});
+		JButton cancelButton = new MButton("Cancelar", new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		buttonPanel.add(saveButton);
+		buttonPanel.add(cancelButton);
+		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+	}
 
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                saveCompany();
-            }
-        });
+	private void saveCompany() {
+		try {
+			String name = nameField.getText();
+			String address = addressField.getText();
+			String phone = phoneField.getText();
+			String sector = (String) sectorComboBox.getSelectedItem(); // Obtener valor de JComboBox
 
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
-    }
+			if (company == null) {
+				agency.getCompanyManager().createCompany(name, address, phone, sector);
+			} else {
+				company.setName(name);
+				company.setAddress(address);
+				company.setPhone(phone);
+				company.setSector(sector);
+			}
 
-    private void loadCompanyData() {
-        nameField.setText(company.getName());
-        addressField.setText(company.getAddress());
-        phoneField.setText(company.getPhone());
-        sectorField.setText(company.getSector());
-    }
-
-    private void saveCompany() {
-        try {
-            String name = nameField.getText();
-            String address = addressField.getText();
-            String phone = phoneField.getText();
-            String sector = sectorField.getText();
-
-            if (company == null) {
-                agency.getCompanyManager().createCompany(name, address, phone, sector);
-            } else {
-                company.setName(name);
-                company.setAddress(address);
-                company.setPhone(phone);
-                company.setSector(sector);
-            }
-
-            dispose();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error al guardar la empresa: " + ex.getMessage());
-        }
-    }
+			dispose();
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this, "Error al guardar la empresa: " + ex.getMessage());
+		}
+	}
 }

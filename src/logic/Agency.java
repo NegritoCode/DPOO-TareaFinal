@@ -11,7 +11,7 @@ public class Agency {
 
 	private String name;
 	private CompanyManager companyManager;
-	private HashMap<String, Candidate> candidates; 
+	private HashMap<String, Candidate> candidates;
 	private ArrayList<MonthRegister> months;
 	private HashMap<String, ArrayList<Interview>> candidateInterviewsMap;
 	private HashMap<String, ArrayList<Interview>> offerInterviewsMap;
@@ -21,7 +21,7 @@ public class Agency {
 		candidates = new HashMap<>();
 		months = new ArrayList<MonthRegister>();
 		months.add(new MonthRegister(Id.getMonth(months.size()), 30));
-		
+
 		candidateInterviewsMap = new HashMap<>();
 		offerInterviewsMap = new HashMap<>();
 
@@ -42,7 +42,7 @@ public class Agency {
 	public CompanyManager getCompanyManager() {
 		return companyManager;
 	}
-    
+
 	public ArrayList<Candidate> getCandidates() {
 		return new ArrayList<Candidate>(candidates.values());
 	}
@@ -106,12 +106,13 @@ public class Agency {
 		}
 		return offers;
 	}
+
 	public ArrayList<Offer> getOffersByBranch(String branch) {
 		ArrayList<Offer> offers = new ArrayList<>();
 		for (Company company : companyManager.getCompanies()) {
 			for (Offer offer : company.getOffers()) {
 				if (offer.getBranch().equals(branch)) {
-						offers.add(offer);
+					offers.add(offer);
 				}
 			}
 		}
@@ -124,29 +125,26 @@ public class Agency {
 
 	public Candidate createCandidate(String cid, String branch, String name, char sex, String address, String phone,
 			String schoolLevel, String speciality, int xpYears) {
-		
-		
-		if(candidates.containsKey(cid))
+
+		if (candidates.containsKey(cid))
 			throw new IllegalArgumentException("Ya esta registrado ese CI");
-		else{
-		Candidate candidate;
-		if (branch.equals("custodio")) {
-			candidate = new SegurityCandidate(cid, branch, name, sex, address, phone, schoolLevel, speciality, xpYears,
-					"", "");
-		} else if (branch.equals("turismo")) {
-			candidate = new TourismCandidate(cid, branch, name, sex, address, phone, schoolLevel, speciality, xpYears,
-					"");
-		} else {
-			candidate = new Candidate(cid, branch, name, sex, address, phone, schoolLevel, speciality, xpYears);
+		else {
+			Candidate candidate;
+			if (branch.equals("custodio")) {
+				candidate = new SegurityCandidate(cid, branch, name, sex, address, phone, schoolLevel, speciality,
+						xpYears, "", "");
+			} else if (branch.equals("turismo")) {
+				candidate = new TourismCandidate(cid, branch, name, sex, address, phone, schoolLevel, speciality,
+						xpYears, "");
+			} else {
+				candidate = new Candidate(cid, branch, name, sex, address, phone, schoolLevel, speciality, xpYears);
+			}
+
+			candidates.put(cid, candidate); // Agregar candidato al HashMap
+
+			return candidate;
 		}
 
-		candidates.put(cid, candidate); // Agregar candidato al HashMap
-		
-		return candidate;
-		}
-		
-
-		
 	}
 
 	public void createInterview(String candidateId, String companyId, String offerId) {
@@ -161,10 +159,10 @@ public class Agency {
 
 		Interview interview = month.createInterview(candidateId, companyId, offerId);
 
-		Candidate candidate = candidates.get(candidateId);
-		if (candidate != null) {
-			candidate.addInterview(interview); 
+		if (!candidateInterviewsMap.containsKey(candidateId)) {
+			candidateInterviewsMap.put(candidateId, new ArrayList<>());
 		}
+		candidateInterviewsMap.get(candidateId).add(interview);
 
 		if (!offerInterviewsMap.containsKey(offerId)) {
 			offerInterviewsMap.put(offerId, new ArrayList<>());

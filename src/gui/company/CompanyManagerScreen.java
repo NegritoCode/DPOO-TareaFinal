@@ -97,14 +97,14 @@ public class CompanyManagerScreen extends JFrame {
 		JPanel centerPanel = new JPanel(new GridLayout(1, 2));
 		centerPanel.setBackground(new Color(245, 245, 245));
 
-		String[] columnNames = { "Nombre", "Dirección", "Sector" };
+		String[] columnNames = { "ID", "Nombre", "Dirección", "Sector" };
 		companyTableModel = new DefaultTableModel(columnNames, 0);
 		companyTable = new MTable(companyTableModel);
 
 		JScrollPane leftScrollPane = new JScrollPane(companyTable);
 		centerPanel.add(leftScrollPane);
 
-		String[] offerColumnNames = { "No.", "Rama", "Salario", "Disponible" };
+		String[] offerColumnNames = { "ID", "Rama", "Salario", "Disponible" };
 		offerTableModel = new DefaultTableModel(offerColumnNames, 0);
 		getContentPane().add(centerPanel, BorderLayout.CENTER);
 		getContentPane().add(centerPanel, BorderLayout.CENTER);
@@ -146,6 +146,7 @@ public class CompanyManagerScreen extends JFrame {
 				if (currentCompany != null) {
 					new OfferFormDialog(CompanyManagerScreen.this, currentCompany);
 					renderOffers();
+					renderCompanies();
 				} else {
 					JOptionPane.showMessageDialog(CompanyManagerScreen.this,
 							"Seleccione una empresa para agregar una oferta.");
@@ -158,6 +159,7 @@ public class CompanyManagerScreen extends JFrame {
 				if (currentOffer != null) {
 					new OfferFormDialog(CompanyManagerScreen.this, currentCompany, currentOffer);
 					renderOffers();
+					renderCompanyDetails();
 				} else {
 					JOptionPane.showMessageDialog(CompanyManagerScreen.this, "Seleccione una oferta para editar.");
 				}
@@ -169,6 +171,7 @@ public class CompanyManagerScreen extends JFrame {
 				if (currentOffer != null) {
 					currentOffer.setAvailable(!currentOffer.isAvailable());
 					renderOffers();
+					renderCompanyDetails();
 				} else {
 					JOptionPane.showMessageDialog(CompanyManagerScreen.this,
 							"Primero seleccione una oferta para eliminar.");
@@ -184,7 +187,7 @@ public class CompanyManagerScreen extends JFrame {
 		JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		bottomPanel.setBackground(new Color(245, 245, 245));
 		bottomPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(224, 224, 224)));
-		JButton addButton = new MButton("+", new ActionListener() {
+		JButton addButton = new MButton("Añadir Compañía", new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new CompanyFormDialog(CompanyManagerScreen.this, null).setVisible(true);
@@ -192,6 +195,21 @@ public class CompanyManagerScreen extends JFrame {
 			}
 		});
 		bottomPanel.add(addButton);
+		getContentPane().add(bottomPanel, BorderLayout.SOUTH);
+
+		MButton editButton = new MButton("Editar Compañía", new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (currentCompany == null) {
+					JOptionPane.showMessageDialog(CompanyManagerScreen.this,
+							"Seleccione una empresa para poder editarla.");
+				} else {
+					new CompanyFormDialog(CompanyManagerScreen.this, currentCompany).setVisible(true);
+					renderCompanies();
+				}
+			}
+		});
+		bottomPanel.add(editButton);
 
 		// Load data
 		renderCompanies();
@@ -200,8 +218,8 @@ public class CompanyManagerScreen extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				int selectedRow = companyTable.getSelectedRow();
 				if (selectedRow != -1) {
-					String name = (String) companyTableModel.getValueAt(selectedRow, 0);
-					currentCompany = agency.getCompanyManager().getCompanyByName(name);
+					String id = (String) companyTableModel.getValueAt(selectedRow, 0);
+					currentCompany = agency.getCompanyManager().getCompanyById(id);
 					renderCompanyDetails();
 					renderOffers();
 				}
@@ -210,12 +228,11 @@ public class CompanyManagerScreen extends JFrame {
 		offerTable.addMouseListener(new MouseInputAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (currentCompany != null) {
-					String index = (String) offerTableModel.getValueAt(offerTable.getSelectedRow(), 0);
-					if (index != null) {
-						currentOffer = currentCompany.getOffers().get(Integer.parseInt(index));
+					String offerId = (String) offerTableModel.getValueAt(offerTable.getSelectedRow(), 0);
+					if (offerId != null) {
+						currentOffer = currentCompany.getOfferById(offerId);
 						deleteOfferButton.setText(currentOffer.isAvailable() ? "Eliminar Oferta" : "Habilitar Oferta");
 					}
-
 				}
 			}
 		});
@@ -232,9 +249,10 @@ public class CompanyManagerScreen extends JFrame {
 		String query = searchField.getText();
 		companyTableModel.setRowCount(0);
 		for (Company company : agency.getCompanyManager().getCompanies()) {
-			if ((company.getName().toLowerCase().contains(query) || company.getAddress().toLowerCase().contains(query))
-					&& sectorsFilter.get(company.getSector())) {
-				companyTableModel.addRow(new Object[] { company.getName(), company.getAddress(), company.getSector() });
+			if ((company.getName().toLowerCase().contains(query) || company.getId().toLowerCase().contains(query)
+					|| company.getAddress().toLowerCase().contains(query)) && sectorsFilter.get(company.getSector())) {
+				companyTableModel.addRow(
+						new Object[] { company.getId(), company.getName(), company.getAddress(), company.getSector() });
 			}
 		}
 	}
@@ -245,8 +263,8 @@ public class CompanyManagerScreen extends JFrame {
 		companyDetailsPanel.add(new DetailLabel("Dirección:", currentCompany.getAddress()));
 		companyDetailsPanel.add(new DetailLabel("Teléfono:", currentCompany.getPhone()));
 		companyDetailsPanel.add(new DetailLabel("Sector:", currentCompany.getSector()));
-		companyDetailsPanel
-				.add(new DetailLabel("Ofertas publicadas:", String.valueOf(currentCompany.getOffers().size())));
+		companyDetailsPanel.add(new DetailLabel("Ofertas publicadas:",
+				currentCompany.getAvailableOffers().size() + "/" + currentCompany.getOffers().size()));
 		companyDetailsPanel.revalidate();
 		companyDetailsPanel.repaint();
 	}
@@ -267,14 +285,13 @@ public class CompanyManagerScreen extends JFrame {
 		currentOffer = null;
 		if (currentCompany != null) {
 			ArrayList<Object[]> unavailableRows = new ArrayList<>();
-			int i = 0;
+
 			for (Offer offer : currentCompany.getOffers()) {
 				if (offer.isAvailable()) {
-					offerTableModel.addRow(new Object[] { i + "", offer.getBranch(), offer.getSalary(), "Sí" });
+					offerTableModel.addRow(new Object[] { offer.getId(), offer.getBranch(), offer.getSalary(), "Sí" });
 				} else {
-					unavailableRows.add(new Object[] { i + "", offer.getBranch(), offer.getSalary(), "No" });
+					unavailableRows.add(new Object[] { offer.getId(), offer.getBranch(), offer.getSalary(), "No" });
 				}
-				i++;
 			}
 			if (unavailableRows.size() > 0) {
 				offerTableModel.addRow(new Object[] {});

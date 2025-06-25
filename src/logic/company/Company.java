@@ -13,8 +13,8 @@ public class Company {
     private String sector;
     private HashMap<String, Offer> offers;
 
-    public Company(String name, String phone, String address, String sector) {
-        this.id = Id.generateId("COMPANY");
+    public Company(String name, String address, String phone, String sector) {
+        this.id = Id.generateId("COM");
         setName(name);
         setAddress(address);
         setPhone(phone);
@@ -35,6 +35,16 @@ public class Company {
 
     public ArrayList<Offer> getOffers() {
         return new ArrayList<>(offers.values());
+    }
+
+    public ArrayList<Offer> getAvailableOffers() {
+        ArrayList<Offer> availableOffers = new ArrayList<>();
+        for (Offer offer : offers.values()) {
+            if (offer.isAvailable()) {
+                availableOffers.add(offer);
+            }
+        }
+        return availableOffers;
     }
 
     public int getNoOffers() {
@@ -73,8 +83,8 @@ public class Company {
     }
 
     public void setPhone(String phone) {
-        if (phone == null || phone.trim().isEmpty()) {
-            throw new IllegalArgumentException("El teléfono no puede estar vacío.");
+    	if (phone == null || !phone.trim().matches("\\d{8}")) {
+            throw new IllegalArgumentException("El teléfono debe ser un número de 8 dígitos.");
         }
         this.phone = phone;
     }

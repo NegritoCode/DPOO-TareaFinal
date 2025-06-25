@@ -14,7 +14,7 @@ public class CompanyManager {
         return new ArrayList<Company>(companies.values());
     }
 
-    public Company getCompanyByName(String name) throws IllegalArgumentException {
+    public Company getCompanyByName(String name) {
         Company company = null;
         ArrayList<Company> values = getCompanies();
         int i = 0;

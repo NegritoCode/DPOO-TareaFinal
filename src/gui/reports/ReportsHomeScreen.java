@@ -72,7 +72,7 @@ public class ReportsHomeScreen extends JFrame {
 
 						table.setRowCount(0);
 						for (Candidate candidate : candidates) {
-							for (Interview interview : candidate.getInterviews()) {
+							for (Interview interview : agency.getInterviewsByCandidate(candidate.getCid())) {
 								if ((candidate.getName().toLowerCase().contains(query)
 										|| interview.getMonthlyId().contains(query))
 										&& filter.get(candidate.getName())) {
