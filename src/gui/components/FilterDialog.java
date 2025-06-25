@@ -15,6 +15,7 @@ public class FilterDialog extends JDialog {
 		filter = new HashMap<>(initialFilter);
 
 		setSize(300, 400);
+		setResizable(false);
 		setLocationRelativeTo(parent);
 		getContentPane().setLayout(new BorderLayout());
 
