@@ -160,12 +160,12 @@ public class Agency {
 		Interview interview = month.createInterview(candidateId, companyId, offerId);
 
 		if (!candidateInterviewsMap.containsKey(candidateId)) {
-			candidateInterviewsMap.put(candidateId, new ArrayList<>());
+			candidateInterviewsMap.put(candidateId, new ArrayList<Interview>());
 		}
 		candidateInterviewsMap.get(candidateId).add(interview);
 
 		if (!offerInterviewsMap.containsKey(offerId)) {
-			offerInterviewsMap.put(offerId, new ArrayList<>());
+			offerInterviewsMap.put(offerId, new ArrayList<Interview>());
 		}
 		offerInterviewsMap.get(offerId).add(interview);
 	}
